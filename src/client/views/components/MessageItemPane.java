@@ -19,7 +19,7 @@ public class MessageItemPane extends StackPane {
 		Label subjectLabel = new Label("Failed to get message information");
 		Label dateLabel = new Label("--:--");
 		try {
-			
+
 			authorLabel.setText(MimeUtility.decodeText(message.getFrom()[0].toString()));
 			subjectLabel.setText(message.getSubject());
 			dateLabel.setText(message.getSentDate().toString());
@@ -29,7 +29,7 @@ public class MessageItemPane extends StackPane {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		vBox.getChildren().addAll(authorLabel, subjectLabel, dateLabel);
 	}
 }

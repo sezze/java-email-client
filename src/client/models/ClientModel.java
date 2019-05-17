@@ -6,8 +6,29 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.layout.Pane;
 
 public class ClientModel {
+	
+	/*
+	 * Fields
+	 */
+	
+	private ObservableList<AccountModel> accounts = FXCollections.observableArrayList();
+	private Pane mainPage;
+	private Pane settingsPage;
+	
+	/*
+	 * Properties
+	 */
+	
+	// (Pane) active page
+	private ObjectProperty<Pane> activePage = new SimpleObjectProperty<Pane>();
+	public ObjectProperty<Pane> activePageProperty() { return activePage; }
+	public void setActivePage(Pane val) { activePage.set(val); }
+	public Pane getActivePage() { return activePage.get(); }
 	
 	// (Folder) active folder
 	private ObjectProperty<Folder> activeFolder = new SimpleObjectProperty<Folder>();
@@ -20,5 +41,15 @@ public class ClientModel {
 	public BooleanProperty isBusyProperty() { return isBusy; }
 	public void setIsBusy(boolean val) { isBusy.set(val); }
 	public boolean getIsBusy() { return isBusy.get(); }
+	
+	/*
+	 * Field getters / setters
+	 */
+	
+	public ObservableList<AccountModel> getAccounts() { return accounts; }
+	
+	public Pane getMainPage() { return mainPage; }
+	
+	public Pane getSettingsPage() { return settingsPage; }
 	
 }

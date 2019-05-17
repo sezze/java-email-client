@@ -17,7 +17,6 @@ public class AccountModel {
 	private String smtpAddress;
 	private String imapAddress;
 	
-	
 	/*
 	 * Properties
 	 */
@@ -39,7 +38,6 @@ public class AccountModel {
 	public ObjectProperty<Folder> inboxFolderProperty() { return inboxFolder; }
 	public void setInboxFolder(Folder val) { inboxFolder.set(val); }
 	public Folder getInboxFolder() { return inboxFolder.get(); }
-	
 	
 	/*
 	 * Field getters / setters
