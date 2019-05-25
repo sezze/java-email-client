@@ -16,7 +16,7 @@ public class ClientModel {
 	 * Fields
 	 */
 	
-	private ObservableList<AccountModel> accounts = FXCollections.observableArrayList();
+	private ObservableList<Account> accounts = FXCollections.observableArrayList();
 	private Pane mainPage;
 	private Pane settingsPage;
 	
@@ -46,7 +46,7 @@ public class ClientModel {
 	 * Field getters / setters
 	 */
 	
-	public ObservableList<AccountModel> getAccounts() { return accounts; }
+	public ObservableList<Account> getAccounts() { return accounts; }
 	
 	public Pane getMainPage() { return mainPage; }
 	

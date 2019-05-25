@@ -1,3 +1,6 @@
+# Protected configuration file
+tests.properties
+
 # Compiled class file
 *.class
 
