@@ -1,1 +1,3 @@
-{server=imap.example.com, user=username, password=password}
+server=imap.example.com
+user=username
+password=password
