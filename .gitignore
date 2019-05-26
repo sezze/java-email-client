@@ -1,6 +1,9 @@
 # Protected configuration file
 tests.properties
 
+#build
+bin/
+
 # Compiled class file
 *.class
 
