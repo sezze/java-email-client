@@ -1,0 +1,25 @@
+* {
+	-fx-font-smoothing-type: lcd;
+}
+
+.root {
+	-c-bg: #f8f9f2;
+	-c-fg: #c5bcb5;
+	-c-primary: #ff3a3a;
+	-c-highlight: #f4b349;
+	-c-text: #0f121c;
+	
+	-c-bg-alt: #E2E3DC;
+	-c-fg-alt: #B4ABA5;
+	-c-primary-alt: #FF4B4B;
+	-c-highlight-alt: #F5B959;
+	-c-text-alt: #242730;
+	
+	-fx-base: white;
+	-fx-background: white;
+	-fx-control-inner-background: white;
+	-fx-dark-text-color: black;
+    -fx-mid-text-color: #0f121c;
+    -fx-light-text-color: white;
+    /* -fx-accent: #ff3a3a; */
+}

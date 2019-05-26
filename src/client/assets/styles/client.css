@@ -1,4 +1,12 @@
 .message-list-item {
-  -fx-padding: 16px;
-  -fx-background-color: gray;
+	-fx-padding: 4px 8px;
+	-fx-background-color: -fx-base;
+}
+
+.message-list-item:hover {
+	-fx-background-color: derive(-fx-base, -10%);
+}
+
+.message-list-item:pressed {
+	-fx-background-color: derive(-fx-base, -20%);
 }

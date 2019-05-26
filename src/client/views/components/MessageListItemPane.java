@@ -4,6 +4,7 @@ package client.views.components;
 import client.models.Message;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -32,8 +33,11 @@ public class MessageListItemPane extends VBox {
 		
 		// Attachment row
 		attachmentLabel = new Label(Integer.toString(message.getAttachements().length));
+		ImageView attachmentIcon = new ImageView("client/assets/images/clip.png");
+		attachmentIcon.setFitWidth(18);
+		attachmentIcon.setFitHeight(18);
 		attachmentRow = new HBox();
-		attachmentRow.getChildren().addAll(attachmentLabel);
+		attachmentRow.getChildren().addAll(attachmentIcon, attachmentLabel);
 		
 		// Date row
 		dateLabel = new Label(message.getDate().toString());
@@ -43,7 +47,7 @@ public class MessageListItemPane extends VBox {
 		// Lower row
 		lowerRow = new HBox();
 		lowerRow.getChildren().addAll(attachmentRow, dateRow);
-		dateRow.setAlignment(Pos.CENTER_LEFT);
+		attachmentRow.setAlignment(Pos.CENTER_LEFT);
 		dateRow.setAlignment(Pos.CENTER_RIGHT);
 		HBox.setHgrow(dateRow, Priority.ALWAYS);
 		

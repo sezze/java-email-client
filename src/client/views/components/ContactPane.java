@@ -12,12 +12,12 @@ public class ContactPane extends HBox {
 	private Label addressLabel;
 	
 	public ContactPane(Contact contact) {
-		super();
-		
 		this.contact = contact;
 		
+		setSpacing(5);
+		
 		nameLabel = new Label(contact.getName());
-		addressLabel = new Label(contact.getAddress());
+		addressLabel = new Label("<" + contact.getAddress() + ">");
 		
 		getChildren().addAll(nameLabel, addressLabel);
 	}
