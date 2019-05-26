@@ -1,6 +1,7 @@
 package client.views.components;
 
 
+import client.Main;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -34,6 +35,14 @@ public class ClientMenuBar extends MenuBar {
 
 		Menu debug = new Menu("Debug");
 		
+		// Reload stylesheet
+		MenuItem reloadStyle = new MenuItem("Reload stylesheet");
+		reloadStyle.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
+		reloadStyle.setOnAction(e -> {
+			scene.getStylesheets().clear();
+			scene.getStylesheets().addAll(Main.STYLESHEETS);
+		});
+		
 		// Settings page
 		MenuItem settingsPage = new MenuItem("Settings page");
 		settingsPage.setOnAction(e -> {
@@ -46,7 +55,7 @@ public class ClientMenuBar extends MenuBar {
 			//model.setActivePage(model.getMainPage());
 		});
 
-		debug.getItems().addAll(settingsPage, mainPage);
+		debug.getItems().addAll(reloadStyle, settingsPage, mainPage);
 
 		/*
 		 * Add menus -----------------------------------------------------------
