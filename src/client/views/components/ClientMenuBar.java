@@ -1,6 +1,7 @@
 package client.views.components;
 
-import client.models.ClientModel;
+
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -10,7 +11,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 public class ClientMenuBar extends MenuBar {
-	public ClientMenuBar(Stage stage, ClientModel model) {
+	public ClientMenuBar(Stage stage, Scene scene) {
 
 		/*
 		 * File ---------------------------------------------------------------
@@ -32,17 +33,17 @@ public class ClientMenuBar extends MenuBar {
 		 */
 
 		Menu debug = new Menu("Debug");
-
+		
 		// Settings page
 		MenuItem settingsPage = new MenuItem("Settings page");
 		settingsPage.setOnAction(e -> {
-			model.setActivePage(model.getSettingsPage());
+			//model.setActivePage(model.getSettingsPage());
 		});
 		
 		// Main page
 		MenuItem mainPage = new MenuItem("Main page");
 		mainPage.setOnAction(e -> {
-			model.setActivePage(model.getMainPage());
+			//model.setActivePage(model.getMainPage());
 		});
 
 		debug.getItems().addAll(settingsPage, mainPage);

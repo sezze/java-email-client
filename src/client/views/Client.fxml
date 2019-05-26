@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ClientController">
+   <children>
+      <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
+         <children>
+            <SplitPane dividerPositions="0.0531062124248497, 0.1092184368737475" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <items>
+                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="180.0">
+                     <children>
+                        <ComboBox maxWidth="1.7976931348623157E308" />
+                        <ScrollPane prefHeight="200.0" prefWidth="209.0" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox />
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="240.0">
+                     <children>
+                        <VBox>
+                           <children>
+                              <TextField promptText="🔍 Search" />
+                           </children>
+                        </VBox>
+                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox fx:id="messageList">
+                                 <children>
+                                    <VBox>
+                                       <padding>
+                                          <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
+                                       </padding>
+                                       <children>
+                                          <Label text="App Store">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Alerts - We've recieved your order - Reminder: Your order successfully, we've recieved an email sent to 'Doc' (AST)." />
+                                          <HBox>
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../assets/images/clip.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Label text="2">
+                                                         <HBox.margin>
+                                                            <Insets left="4.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label text="12:27 today">
+                                                         <font>
+                                                            <Font name="System Italic" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                    <VBox>
+                                       <children>
+                                          <Label text="App Store">
+                                             <font>
+                                                <Font name="System Bold" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="Alerts - We've recieved your order - Reminder: Your order successfully, we've recieved an email sent to 'Doc' (AST)." />
+                                          <HBox>
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT">
+                                                   <children>
+                                                      <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../assets/images/clip.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Label text="2">
+                                                         <HBox.margin>
+                                                            <Insets left="4.0" />
+                                                         </HBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <HBox alignment="CENTER_RIGHT" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label text="12:27 today">
+                                                         <font>
+                                                            <Font name="System Italic" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                           <content>
+                              <VBox spacing="12.0">
+                                 <children>
+                                    <Label text="Alerts - We've recieved your order - Reminder: Your order successfully, we've recieved an email sent to 'Doc' (AST)." wrapText="true">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <VBox spacing="16.0">
+                                       <children>
+                                          <HBox>
+                                             <children>
+                                                <VBox>
+                                                   <children>
+                                                      <Label text="App Store" wrapText="true">
+                                                         <font>
+                                                            <Font size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="support@super-legit-apple.tk" wrapText="true" />
+                                                      <Label text="To: sebastian.aarnio@abo.fi" wrapText="true" />
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="TOP_RIGHT" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label text="12:27 25.05.2019" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <Label text="Please check attached file below. -Apple Support,." wrapText="true" />
+                                          <FlowPane hgap="8.0" vgap="8.0">
+                                             <children>
+                                                <HBox spacing="8.0">
+                                                   <children>
+                                                      <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../assets/images/pdf.jpg" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <VBox>
+                                                         <children>
+                                                            <Label text="Payment-Update.pdf" />
+                                                            <Label text="PDF 56KB" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </padding>
+                                                </HBox>
+                                                <HBox spacing="8.0">
+                                                   <children>
+                                                      <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../assets/images/pdf.jpg" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <VBox>
+                                                         <children>
+                                                            <Label text="Payment-Update.pdf" />
+                                                            <Label text="PDF 56KB" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                                   </padding>
+                                                </HBox>
+                                             </children>
+                                          </FlowPane>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox prefHeight="200.0" prefWidth="100.0" spacing="4.0">
+                                       <children>
+                                          <Label text="Reply">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Write your reply here" wrapText="true" />
+                                          <Button mnemonicParsing="false" text="Send" />
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                       </padding>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </VBox>
+               </items>
+            </SplitPane>
+         </children>
+      </VBox>
+   </children>
+</VBox>

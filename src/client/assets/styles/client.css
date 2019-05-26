@@ -1,0 +1,4 @@
+.message-list-item {
+  -fx-padding: 16px;
+  -fx-background-color: gray;
+}

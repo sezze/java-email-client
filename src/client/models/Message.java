@@ -24,6 +24,10 @@ public class Message {
 		this.subject = subject;
 		this.isHTML = isHTML;
 		this.body = body;
+		
+		this.ccRecievers = new Contact[] {};
+		this.bccRecievers = new Contact[] {};
+		this.attachements = new Attachment[] {};
 	}
 	
 	public void setForwarder(Contact forwarder) { this.forwarder = forwarder; }
