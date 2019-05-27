@@ -4,6 +4,8 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
+import javax.mail.internet.MimeMessage;
+
 import client.models.Contact;
 import client.models.Message;
 import client.views.components.MessageListItemPane;
