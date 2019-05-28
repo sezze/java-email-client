@@ -127,6 +127,11 @@ public class Message implements Serializable {
 			return this;
 		}
 		
+		public Builder addAttachment(Attachment attachment) {
+			this.attachments.add(attachment);
+			return this;
+		}
+		
 		public Builder body(String body, boolean isHTML) {
 			this.body = body;
 			this.isHTML = isHTML;

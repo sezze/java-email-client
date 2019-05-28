@@ -47,7 +47,7 @@ public class ClientMenuBar extends MenuBar {
 		// Add account
 		MenuItem addAccount = new MenuItem("Add account");
 		addAccount.setOnAction(e -> {
-			Main.client.addAccount(new Account("Herbert", "herbert@yahoo.com", "herbert@yahoo.com", "herbertthesherbert59", "smtp.yahoo.com", "imap.yahoo.com"));
+			Main.client.addAccount(new Account("Herbert Love", "herbert@yahoo.com", "herbert@yahoo.com", "herbertthesherbert59", "smtp.yahoo.com", "imap.yahoo.com"));
 		});
 		
 		// Settings page

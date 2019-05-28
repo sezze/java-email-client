@@ -26,7 +26,9 @@ public class FolderTree extends TreeView<Folder> {
 		folderListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				updateTree();
+				if (evt.getPropertyName() == Folder.FOLDERS || evt.getPropertyName() == Folder.NAME) {
+					updateTree();
+				}
 			}
 		};
 	}

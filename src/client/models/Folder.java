@@ -9,6 +9,10 @@ import java.util.List;
 
 public class Folder {
 
+	public static final String NAME = "name";
+	public static final String FOLDERS = "folders";
+	public static final String MESSAGES = "messages";
+	
 	private String name;
 	private List<Folder> subFolders;
 	private List<Message> messages;
@@ -24,15 +28,30 @@ public class Folder {
 	public String getName() {
 		return name;
 	}
+	
+	public void setName(String name) {
+		this.name = name;
+		notifyChangeListeners(this, NAME);
+	}
 
 	public void addMessage(Message message) {
 		messages.add(message);
-		notifyChangeListeners();
+		notifyChangeListeners(this, MESSAGES);
 	}
 	
 	public void addMessages(Collection<Message> messages) {
 		this.messages.addAll(messages);
-		notifyChangeListeners();
+		notifyChangeListeners(this, MESSAGES);
+	}
+	
+	public void removeMessage(Message message) {
+		messages.remove(message);
+		notifyChangeListeners(this, MESSAGES);
+	}
+	
+	public void removeMessages(Collection<Message> messages) {
+		this.messages.removeAll(messages);
+		notifyChangeListeners(this, MESSAGES);
 	}
 	
 	public List<Message> getMessages() {
@@ -41,21 +60,21 @@ public class Folder {
 
 	public void addFolder(Folder folder) {
 		subFolders.add(folder);
-		notifyChangeListeners();
+		notifyChangeListeners(this, FOLDERS);
 	}
 
 	public void addFolders(Collection<Folder> folders) {
 		folders.addAll(folders);
-		notifyChangeListeners();
+		notifyChangeListeners(this, FOLDERS);
 	}
 
 	public List<Folder> getFolders() {
 		return Collections.unmodifiableList(subFolders);
 	}
 	
-	private void notifyChangeListeners() {
+	private void notifyChangeListeners(Folder folder, String propertyName) {
 		for (PropertyChangeListener listener : listeners) {
-			listener.propertyChange(new PropertyChangeEvent(this, null, null, null));
+			listener.propertyChange(new PropertyChangeEvent(folder, propertyName, null, null));
 		}
 	}
 	

@@ -1,10 +1,7 @@
 package client.controllers;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 import client.Main;
@@ -42,11 +39,8 @@ public class ClientController implements Initializable {
 		Main.client.addAccount(account);
 
 		Message message = new Message.Builder().sender(new Contact("Bill Gates", "bill@microsoft.com"))
-				.addRecipients(new ArrayList<Contact>() {
-					{
-						new Contact("Sebastian", "sebbe.aarnio@hotmail.com");
-					}
-				}).subject("Dear Sebastian, I have now sent you the million dollars that I've promised you!")
+				.addRecipients(new ArrayList<Contact>() {{new Contact("Sebastian", "sebbe.aarnio@hotmail.com");}})
+				.subject("Dear Sebastian, I have now sent you the million dollars that I've promised you!")
 				.body("WOWA, <b><i>this</i> is the body</b>", true).build();
 		messagePane.getChildren().add(new MessageListItemPane(message));
 		CacheController.cacheMessage(message);
