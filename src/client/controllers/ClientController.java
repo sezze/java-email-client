@@ -1,9 +1,10 @@
 package client.controllers;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.ResourceBundle;
 
 import client.Main;
@@ -23,7 +24,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-public class ClientController implements Initializable, Observer {
+public class ClientController implements Initializable {
 
 	@FXML
 	private Pane messagePane;
@@ -65,9 +66,14 @@ public class ClientController implements Initializable, Observer {
 		folderTreeContainer.getChildren().add(folderTree);
 
 		updateAccountsComboBox();
-		Main.client.addObserver(this);
-		Main.client.getActiveAccount().addObserver(this);
-		
+		Main.client.addChangeListener(e -> {
+			switch (e.getPropertyName()) {
+			case Client.ACCOUNTS:
+				updateAccountsComboBox();
+				break;
+			}
+		});
+
 		// Set active folder
 		folderTree.getSelectionModel().selectedItemProperty()
 				.addListener((ObservableValue<? extends TreeItem<Folder>> o, TreeItem<Folder> oldValue,
@@ -84,15 +90,6 @@ public class ClientController implements Initializable, Observer {
 	private void updateAccountsComboBox() {
 		accountsComboBox.setItems(FXCollections.observableArrayList(Main.client.getAccounts()));
 		accountsComboBox.setValue(Main.client.getActiveAccount());
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		Client client = (Client) o;
-		Client.UpdateType type = (Client.UpdateType) arg;
-		if (type == Client.UpdateType.ACCOUNTS)
-			updateAccountsComboBox();
-
 	}
 
 }

@@ -1,12 +1,15 @@
 package client.models;
 
-import java.util.Observable;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 
-public class Account extends Observable {
+public class Account {
 
 	private String displayName;
 	private String address;
@@ -19,6 +22,8 @@ public class Account extends Observable {
 
 	private Session session;
 	private Store store;
+	
+	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
 
 	public Account(String displayName, String address, String username, String password, String smtpAddress,
 			String imapAddress) {
@@ -36,8 +41,7 @@ public class Account extends Observable {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
-		setChanged();
-		notifyObservers();
+		notifyChangeListeners();
 	}
 
 	public String getUsername() {
@@ -46,8 +50,7 @@ public class Account extends Observable {
 
 	public void setUsername(String username) {
 		this.username = username;
-		setChanged();
-		notifyObservers();
+		notifyChangeListeners();
 	}
 
 	public String getPassword() {
@@ -56,8 +59,7 @@ public class Account extends Observable {
 
 	public void setPassword(String password) {
 		this.password = password;
-		setChanged();
-		notifyObservers();
+		notifyChangeListeners();
 	}
 
 	public String getSmtpAddress() {
@@ -66,8 +68,7 @@ public class Account extends Observable {
 
 	public void setSmtpAddress(String smtpAddress) {
 		this.smtpAddress = smtpAddress;
-		setChanged();
-		notifyObservers();
+		notifyChangeListeners();
 	}
 
 	public String getImapAddress() {
@@ -76,8 +77,7 @@ public class Account extends Observable {
 
 	public void setImapAddress(String imapAddress) {
 		this.imapAddress = imapAddress;
-		setChanged();
-		notifyObservers();
+		notifyChangeListeners();
 	}
 
 	public Folder getRootFolder() {
@@ -99,6 +99,20 @@ public class Account extends Observable {
 
 	public Store getStore() {
 		return store;
+	}
+	
+	private void notifyChangeListeners() {
+		for (PropertyChangeListener listener : listeners) {
+			listener.propertyChange(new PropertyChangeEvent(this, null, null, null));
+		}
+	}
+	
+	public void addChangeListener(PropertyChangeListener listener) {
+		listeners.add(listener);
+	}
+	
+	public void removeChangeListener(PropertyChangeListener listener) {
+		listeners.remove(listener);
 	}
 
 	@Override

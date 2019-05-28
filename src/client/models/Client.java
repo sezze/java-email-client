@@ -1,17 +1,26 @@
 package client.models;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
 
-public class Client extends Observable implements Serializable {
+public class Client implements Serializable {
+	
+	public static final String ACCOUNTS = "accounts";
+	public static final String ACTIVE_FOLDER = "activeFolder";
+	public static final String ACTIVE_ACCOUNT = "activeAccount";
+	public static final String ACTIVE_MESSAGE = "activeMessage";
 
 	private List<Account> accounts;
 	private Account activeAccount;
 	private Folder activeFolder;
 	private Message activeMessage;
+	
+	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
+	
 	private static final long serialVersionUID = 7198673490993617265L;
 
 	public Client() {
@@ -21,21 +30,19 @@ public class Client extends Observable implements Serializable {
 	public void addAccount(Account account) {
 		accounts.add(account);
 		if(activeAccount == null)
-			activeAccount = account;
-		setChanged();
-		notifyObservers(Client.UpdateType.ACCOUNTS);
+			setActiveAccount(account);
+		notifyChangeListeners(ACCOUNTS);
 	}
 	
 	public void removeAccount(Account account) {
 		accounts.remove(account);
 		if(activeAccount == account) {
 			if(accounts.size() > 0)
-				activeAccount = accounts.get(0);
+				setActiveAccount(accounts.get(0));
 			else
-				activeAccount = null;
+				setActiveAccount(null);
 		}
-		setChanged();
-		notifyObservers(Client.UpdateType.ACCOUNTS);
+		notifyChangeListeners(ACCOUNTS);
 	}
 	
 	public List<Account> getAccounts() {
@@ -48,8 +55,7 @@ public class Client extends Observable implements Serializable {
 
 	public void setActiveAccount(Account activeAccount) {
 		this.activeAccount = activeAccount;
-		setChanged();
-		notifyObservers(Client.UpdateType.ACTIVE_ACCOUNT);
+		notifyChangeListeners(ACTIVE_ACCOUNT);
 	}
 
 	public Folder getActiveFolder() {
@@ -58,8 +64,7 @@ public class Client extends Observable implements Serializable {
 
 	public void setActiveFolder(Folder activeFolder) {
 		this.activeFolder = activeFolder;
-		setChanged();
-		notifyObservers(Client.UpdateType.ACTIVE_FOLDER);
+		notifyChangeListeners(ACTIVE_FOLDER);
 	}
 
 	public Message getActiveMessage() {
@@ -68,12 +73,21 @@ public class Client extends Observable implements Serializable {
 
 	public void setActiveMessage(Message activeMessage) {
 		this.activeMessage = activeMessage;
-		setChanged();
-		notifyObservers(Client.UpdateType.ACTIVE_MESSAGE);
+		notifyChangeListeners(ACTIVE_MESSAGE);
 	}
-
-	public static enum UpdateType {
-		ACCOUNTS, ACTIVE_ACCOUNT, ACTIVE_FOLDER, ACTIVE_MESSAGE
+	
+	private void notifyChangeListeners(String propertyName) {
+		for (PropertyChangeListener listener : listeners) {
+			listener.propertyChange(new PropertyChangeEvent(this, propertyName, null, null));
+		}
+	}
+	
+	public void addChangeListener(PropertyChangeListener listener) {
+		listeners.add(listener);
+	}
+	
+	public void removeChangeListener(PropertyChangeListener listener) {
+		listeners.remove(listener);
 	}
 	
 }

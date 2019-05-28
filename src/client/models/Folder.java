@@ -1,16 +1,19 @@
 package client.models;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
 
-public class Folder extends Observable {
+public class Folder {
 
 	private String name;
 	private List<Folder> subFolders;
 	private List<Message> messages;
+	
+	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
 
 	public Folder(String name) {
 		this.name = name;
@@ -24,14 +27,12 @@ public class Folder extends Observable {
 
 	public void addMessage(Message message) {
 		messages.add(message);
-		setChanged();
-		notifyObservers();
+		notifyChangeListeners();
 	}
 	
 	public void addMessages(Collection<Message> messages) {
 		this.messages.addAll(messages);
-		setChanged();
-		notifyObservers();
+		notifyChangeListeners();
 	}
 	
 	public List<Message> getMessages() {
@@ -40,18 +41,30 @@ public class Folder extends Observable {
 
 	public void addFolder(Folder folder) {
 		subFolders.add(folder);
-		setChanged();
-		notifyObservers();
+		notifyChangeListeners();
 	}
 
 	public void addFolders(Collection<Folder> folders) {
 		folders.addAll(folders);
-		setChanged();
-		notifyObservers();
+		notifyChangeListeners();
 	}
 
 	public List<Folder> getFolders() {
 		return Collections.unmodifiableList(subFolders);
+	}
+	
+	private void notifyChangeListeners() {
+		for (PropertyChangeListener listener : listeners) {
+			listener.propertyChange(new PropertyChangeEvent(this, null, null, null));
+		}
+	}
+	
+	public void addChangeListener(PropertyChangeListener listener) {
+		listeners.add(listener);
+	}
+	
+	public void removeChangeListener(PropertyChangeListener listener) {
+		listeners.remove(listener);
 	}
 	
 	@Override

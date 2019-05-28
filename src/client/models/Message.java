@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class Message implements Serializable{
+public class Message implements Serializable {
 
 	private Contact sender;
 	private List<Contact> recipients;

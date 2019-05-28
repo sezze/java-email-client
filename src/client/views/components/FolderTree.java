@@ -1,22 +1,18 @@
 package client.views.components;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import client.models.Folder;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 
-public class FolderTree extends TreeView<Folder> implements Observer {
+public class FolderTree extends TreeView<Folder> {
 	
 	Folder folder;
+	PropertyChangeListener folderListener;
 	
 	public FolderTree(Folder folder) {
 		this();
@@ -26,6 +22,13 @@ public class FolderTree extends TreeView<Folder> implements Observer {
 	public FolderTree() {
 		maxWidth(USE_PREF_SIZE);
 		VBox.setVgrow(this, Priority.ALWAYS);
+		
+		folderListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				updateTree();
+			}
+		};
 	}
 
 	private void updateTree() {
@@ -49,16 +52,11 @@ public class FolderTree extends TreeView<Folder> implements Observer {
 
 	public void setFolder(Folder folder) {
 		if (this.folder != null) {
-			folder.deleteObserver(this);
+			folder.removeChangeListener(folderListener);
 		}
 		this.folder = folder;
 		updateTree();
-		folder.addObserver(this);
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-				
+		folder.addChangeListener(folderListener);
 	}
 	
 }
