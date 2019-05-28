@@ -15,20 +15,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0" minWidth="0" prefHeight="640.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ClientController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0" minWidth="0" prefHeight="640.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.191" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controllers.ClientController">
    <children>
       <VBox prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">
          <children>
             <SplitPane dividerPositions="0.0531062124248497, 0.1092184368737475" prefHeight="160.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <items>
-                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="180.0">
+                  <VBox fx:id="folderTreeContainer" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="180.0">
                      <children>
                         <ComboBox fx:id="accountsComboBox" maxWidth="1.7976931348623157E308" onAction="#onAccountsComboBoxChange" />
-                        <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="209.0" VBox.vgrow="ALWAYS">
-                           <content>
-                              <VBox fx:id="folderPane" prefHeight="200.0" prefWidth="100.0" />
-                           </content>
-                        </ScrollPane>
                      </children>
                   </VBox>
                   <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="240.0">

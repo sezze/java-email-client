@@ -4,10 +4,15 @@ import java.util.Observable;
 import java.util.Observer;
 
 import client.models.Folder;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.TextFieldTreeCell;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 public class FolderTree extends TreeView<Folder> implements Observer {
 	
