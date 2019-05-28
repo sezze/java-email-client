@@ -1,50 +1,109 @@
 package client.models;
 
+import java.util.Observable;
+
+import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 
-public class Account {
-	
-	private String name;
+public class Account extends Observable {
+
+	private String displayName;
+	private String address;
 	private String username;
 	private String password;
 	private String smtpAddress;
 	private String imapAddress;
-	
-	private Folder[] folders;
-	
+
+	private Folder rootFolder;
+
 	private Session session;
 	private Store store;
-	
-	public Account(String name, String username, String password, String smtpAddress, String imapAddress) {
-		this.name = name;
+
+	public Account(String displayName, String address, String username, String password, String smtpAddress,
+			String imapAddress) {
+		this.displayName = displayName;
+		this.address = address;
 		this.username = username;
 		this.password = password;
 		this.smtpAddress = smtpAddress;
 		this.imapAddress = imapAddress;
 	}
 
-	public String getName() { return name; }
-	public void setName(String name) { this.name = name; }
+	public String getDisplayName() {
+		return displayName;
+	}
 
-	public String getUsername() { return username; }
-	public void setUsername(String username) { this.username = username; }
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+		setChanged();
+		notifyObservers();
+	}
 
-	public String getPassword() { return password; }
-	public void setPassword(String password) { this.password = password; }
+	public String getUsername() {
+		return username;
+	}
 
-	public String getSmtpAddress() { return smtpAddress; }
-	public void setSmtpAddress(String smtpAddress) { this.smtpAddress = smtpAddress; }
+	public void setUsername(String username) {
+		this.username = username;
+		setChanged();
+		notifyObservers();
+	}
 
-	public String getImapAddress() { return imapAddress; }
-	public void setImapAddress(String imapAddress) { this.imapAddress = imapAddress; }
+	public String getPassword() {
+		return password;
+	}
 
-	public Folder[] getFolders() { return folders; }
-	public void setFolders(Folder[] folders) { this.folders = folders; }
+	public void setPassword(String password) {
+		this.password = password;
+		setChanged();
+		notifyObservers();
+	}
 
-	public Session getSession() { return session; }
-	public void setSession(Session session) { this.session = session; }
+	public String getSmtpAddress() {
+		return smtpAddress;
+	}
 
-	public Store getStore() { return store; }
+	public void setSmtpAddress(String smtpAddress) {
+		this.smtpAddress = smtpAddress;
+		setChanged();
+		notifyObservers();
+	}
+
+	public String getImapAddress() {
+		return imapAddress;
+	}
+
+	public void setImapAddress(String imapAddress) {
+		this.imapAddress = imapAddress;
+		setChanged();
+		notifyObservers();
+	}
+
+	public Folder getRootFolder() {
+		return rootFolder;
+	}
 	
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+		try {
+			this.store = session.getStore("imaps");
+		} catch (NoSuchProviderException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Store getStore() {
+		return store;
+	}
+
+	@Override
+	public String toString() {
+		return address;
+	}
+
 }

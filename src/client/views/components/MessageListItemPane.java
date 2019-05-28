@@ -32,7 +32,7 @@ public class MessageListItemPane extends VBox {
 		subjectLabel = new Label(message.getSubject());
 		
 		// Attachment row
-		attachmentLabel = new Label(Integer.toString(message.getAttachements().length));
+		attachmentLabel = new Label(Integer.toString(message.getAttachements().size()));
 		ImageView attachmentIcon = new ImageView("client/assets/images/clip.png");
 		attachmentIcon.setFitWidth(18);
 		attachmentIcon.setFitHeight(18);

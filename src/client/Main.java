@@ -1,9 +1,9 @@
 package client;
 
+import client.models.Client;
 import client.views.components.ClientMenuBar;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.Priority;
@@ -17,19 +17,23 @@ public class Main extends Application {
 			"client/assets/styles/client.css"
 	};
 
+	public static Client client;
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		client = new Client();
+		
 		VBox root = new VBox();
 		root.setFillWidth(true);
 		Scene scene = new Scene(root, 1024, 640);
 		scene.getStylesheets().addAll(STYLESHEETS);
 		
 		MenuBar menuBar = new ClientMenuBar(primaryStage, scene);
-		Parent page = FXMLLoader.load(getClass().getResource("views/Client.fxml"));
+		VBox page = FXMLLoader.load(getClass().getResource("views/Client.fxml"));
 		VBox.setVgrow(page, Priority.ALWAYS);
 		root.getChildren().addAll(menuBar, page);
 		

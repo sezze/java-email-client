@@ -16,10 +16,17 @@ public class ContactPane extends HBox {
 		
 		setSpacing(5);
 		
-		nameLabel = new Label(contact.getName());
-		addressLabel = new Label("<" + contact.getAddress() + ">");
+		if (contact.getName() == null) {
+			addressLabel = new Label(contact.getAddress());
+			
+			getChildren().addAll(addressLabel);
+		} else {
+			nameLabel = new Label(contact.getName());
+			addressLabel = new Label("<" + contact.getAddress() + ">");
+			
+			getChildren().addAll(nameLabel, addressLabel);
+		}
 		
-		getChildren().addAll(nameLabel, addressLabel);
 	}
 	
 	public Contact getContact() { return contact; }
