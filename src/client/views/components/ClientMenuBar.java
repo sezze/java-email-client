@@ -2,7 +2,6 @@ package client.views.components;
 
 
 import client.Main;
-import client.models.Account;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -29,6 +28,7 @@ public class ClientMenuBar extends MenuBar {
 
 		file.getItems().addAll(quit);
 		
+		
 		/*
 		 * Debug menu
 		 */
@@ -40,12 +40,6 @@ public class ClientMenuBar extends MenuBar {
 		reloadStyle.setOnAction(e -> {
 			scene.getStylesheets().clear();
 			scene.getStylesheets().addAll(Main.STYLESHEETS);
-		});
-		
-		// Add account
-		MenuItem addAccount = new MenuItem("Add account");
-		addAccount.setOnAction(e -> {
-			Main.CLIENT.addAccount(new Account("Herbert Love", "herbert@yahoo.com", "herbert@yahoo.com", "herbertthesherbert59", "smtp.yahoo.com", "imap.yahoo.com"));
 		});
 		
 		// Settings page
@@ -60,8 +54,9 @@ public class ClientMenuBar extends MenuBar {
 			// model.setActivePage(model.getMainPage());
 		});
 
-		debug.getItems().addAll(reloadStyle, addAccount, settingsPage, mainPage);
+		debug.getItems().addAll(reloadStyle, settingsPage, mainPage);
 
+		
 		/*
 		 * Add menus
 		 */

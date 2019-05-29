@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import client.models.Client;
-import client.models.Message;
 import client.views.components.ClientMenuBar;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -50,6 +49,7 @@ public class Main extends Application {
 			LOGGER.log(Level.SEVERE, "Failed to create file handler for logger.", e);
 		}
 
+		
 		/*
 		 * Launch application
 		 */
@@ -80,7 +80,7 @@ public class Main extends Application {
 		try {
 			page = FXMLLoader.load(getClass().getResource("views/Client.fxml"));
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "Missing Client.fxml");
+			LOGGER.log(Level.SEVERE, "Error initializing Client.fxml", e);
 			System.exit(1);
 		}
 		VBox.setVgrow(page, Priority.ALWAYS);
@@ -88,12 +88,20 @@ public class Main extends Application {
 		// Add children to root
 		root.getChildren().addAll(menuBar, page);
 
+		
 		/*
 		 * Stage setup
 		 */
 		primaryStage.setTitle("Java Email Client");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		primaryStage.setOnHiding(e -> {
+			e.consume();
+			// TODO Finish syncing and caching!
+			Main.LOGGER.log(Level.WARNING, "The program does not yet check if syncing or caching is finished when the program exits!");
+			System.exit(0);
+		});
 		
 	}
 

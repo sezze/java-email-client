@@ -2,13 +2,13 @@ package client.mappers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.Address;
+import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Flags.Flag;
 import javax.mail.Message.RecipientType;
@@ -16,14 +16,15 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
 import javax.mail.Session;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.MimeUtility;
 
 import client.models.Attachment;
 import client.models.Contact;
 import client.models.Message;
+import client.models.Message.Builder;
 
 public class MessageMapper {
 
@@ -112,20 +113,7 @@ public class MessageMapper {
 		builder.date(serverMsg.getSentDate());
 		
 		// Body
-		Multipart multipart = (Multipart) serverMsg.getContent();
-		for (int i = 0; i < multipart.getCount(); i++) {
-			Part part = multipart.getBodyPart(i);
-			if (part.isMimeType("text/html")) {
-				// Is HTML
-				builder.body(part.getContent().toString(), true);
-			} else if (part.isMimeType("text/plain")) {
-				// Is plain text
-				builder.body(part.getContent().toString(), false);
-			} else {
-				// Is attachment
-				builder.addAttachment(new Attachment(part.getFileName(), part.getSize()));
-			}
-		}
+		findContent(serverMsg, builder);
 		
 		/*
 		 * Optional fields
@@ -151,4 +139,35 @@ public class MessageMapper {
 		return builder.build();
 	}
 
+	private static void findContent(javax.mail.Message message, Builder builder) throws MessagingException, IOException {		
+		if (message.isMimeType("multipart/*")) {
+			handleMultipart((Multipart) message.getContent(), builder);
+		} else {
+			handleContent(message, builder);
+		}
+	}
+
+	private static void handleMultipart(Multipart multipart, Builder builder) throws MessagingException, IOException {
+		for (int i = 0; i < multipart.getCount(); i++) {
+			BodyPart bodyPart = multipart.getBodyPart(i);
+			if (bodyPart.isMimeType("multipart/*")) {
+				handleMultipart((Multipart) bodyPart.getContent(), builder);
+			} else {
+				handleContent(bodyPart, builder);
+			}
+		}
+	}
+	
+	private static void handleContent(Part part, Builder builder) throws MessagingException, IOException {
+		if (part.isMimeType("text/*")) {
+			if (!builder.hasHTMLBody()) {
+				String body = part.getContent().toString();
+				body = MimeUtility.decodeText(part.getContent().toString());
+				builder.body(body, part.isMimeType("text/html"));
+			}
+		} else {
+			builder.addAttachment(new Attachment(part.getFileName(), part.getSize()));
+		}
+	}
+	
 }

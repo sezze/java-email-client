@@ -1,18 +1,17 @@
 package client.controllers;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 
 import client.Main;
 import client.models.Account;
 import client.models.Client;
-import client.models.Contact;
 import client.models.Folder;
 import client.models.Message;
 import client.views.components.FolderTree;
-import client.views.components.MessageListItemPane;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -34,9 +33,26 @@ public class ClientController implements Initializable {
 	private VBox folderTreeContainer;
 
 	private FolderTree folderTree;
+	
+	PropertyChangeListener activeAccountListener;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		
+		activeAccountListener = new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName() == Account.ROOT_FOLDER) {
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							folderTree.setFolder(Main.CLIENT.getActiveAccount().getRootFolder());
+						}
+					});
+				}
+			}
+		};
 		
 		/*
 		 * Child components
@@ -59,6 +75,19 @@ public class ClientController implements Initializable {
 			case Client.ACCOUNTS:
 				updateAccountsComboBox();
 				break;
+			case Client.ACTIVE_ACCOUNT:
+				System.out.println("FIRED");
+				if (e.getOldValue() != null) {
+					((Account) e.getOldValue()).removeChangeListener(activeAccountListener);					
+				}
+				Main.CLIENT.getActiveAccount().addChangeListener(activeAccountListener);
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						folderTree.setFolder(Main.CLIENT.getActiveAccount().getRootFolder());
+					}
+				});
+				break;
 			}
 		});
 
@@ -67,8 +96,19 @@ public class ClientController implements Initializable {
 				.addListener((ObservableValue<? extends TreeItem<Folder>> o, TreeItem<Folder> oldValue,
 						TreeItem<Folder> newValue) -> {
 							// Set active folder to selection
-							Main.CLIENT.setActiveFolder(newValue.getValue());
+							Main.CLIENT.setActiveFolder(newValue != null ? newValue.getValue() : null);
+							System.out.println("-----  " + Main.CLIENT.getActiveFolder() + "  -----");
+							if (Main.CLIENT.getActiveFolder() != null) {
+								for (Message message : Main.CLIENT.getActiveFolder().getMessages()) {
+									System.out.println(message.getSubject());
+								}
+							}
 						});
+		
+		Account testAccount = new Account("Test User", "test@nrng.gq", "test@nrng.gq", "TestPassword", "smtp.yandex.com", "imap.yandex.com", 60000);
+		
+		Main.CLIENT.addAccount(testAccount);
+		
 	}
 
 	@FXML

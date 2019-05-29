@@ -194,6 +194,10 @@ public class Message implements Serializable {
 			Message msg = new Message();
 			
 			if (sender == null || subject == null || recipients.size() == 0 || body == null) {
+				System.out.println(sender);
+				System.out.println(subject);
+				System.out.println(recipients);
+				System.out.println(body);
 				Main.LOGGER.log(Level.SEVERE, "Missing required builder field. Required: Sender, recipients, subject, body", new IllegalStateException());
 				System.exit(1);
 			}
@@ -292,6 +296,10 @@ public class Message implements Serializable {
 		public Builder isSeen(boolean isSeen) {
 			this.isSeen = isSeen;
 			return this;
+		}
+		
+		public boolean hasHTMLBody() {
+			return isHTML; 
 		}
 		
 	}

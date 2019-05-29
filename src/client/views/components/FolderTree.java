@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import client.models.Folder;
+import javafx.application.Platform;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.Priority;
@@ -29,8 +30,14 @@ public class FolderTree extends TreeView<Folder> {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				// Only update if structure or name change (Not new messages, not visible in tree)
+				System.out.println("FOLDERTREE");
 				if (evt.getPropertyName() == Folder.FOLDERS || evt.getPropertyName() == Folder.NAME) {
-					updateTree();
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							updateTree();
+						}
+					});
 				}
 			}
 		};
@@ -57,6 +64,7 @@ public class FolderTree extends TreeView<Folder> {
 	}
 
 	public void setFolder(Folder folder) {
+		System.out.println("SETFOLDER");
 		if (this.folder != null) {
 			// If currently listening to a previous folder
 			folder.removeChangeListener(folderListener);

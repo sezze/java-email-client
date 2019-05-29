@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import client.controllers.ConnectionController;
+import client.controllers.SyncController;
+
 public class Client implements Serializable {
 
 	// Property names
@@ -16,21 +19,22 @@ public class Client implements Serializable {
 	public static final String ACTIVE_MESSAGE = "activeMessage";
 
 	// Properties
-	private List<Account> accounts;
+	private List<Account> accounts = new ArrayList<Account>();
+	private List<ConnectionController> connectionControllers = new ArrayList<ConnectionController>();
+	private List<SyncController> syncControllers = new ArrayList<SyncController>();
 	private Account activeAccount;
 	private Folder activeFolder;
 	private Message activeMessage;
 
 	// Property listeners
 	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
-
+	
 	// Serialization ID
 	private static final long serialVersionUID = 7198673490993617265L;
 
-	public Client() {
-		accounts = new ArrayList<Account>();
-	}
+	public Client() {}
 
+	
 	/*
 	 * Property getters and setters
 	 */
@@ -40,6 +44,9 @@ public class Client implements Serializable {
 		accounts.add(account);
 		if (activeAccount == null)
 			setActiveAccount(account);
+		
+		// Add account's connection and sync controller
+		addSyncController(account, addConnectionController(account));
 		notifyChangeListeners(ACCOUNTS);
 	}
 
@@ -58,14 +65,45 @@ public class Client implements Serializable {
 		return Collections.unmodifiableList(accounts);
 	}
 
+	// Connection Controller
+	public ConnectionController addConnectionController(Account account) {
+		ConnectionController con = new ConnectionController(account);
+		connectionControllers.add(con);
+		return con;
+	}
+	
+	public void removeConnectionController(Account account) {
+		for (ConnectionController connectionController : connectionControllers) {
+			if (connectionController.getAccount() == account) {
+				connectionController.stop();
+				connectionControllers.remove(connectionController);
+			}
+		}
+	}
+	
+	// Sync Controller
+	public void addSyncController(Account account, ConnectionController con) {
+		syncControllers.add(new SyncController(account, con));
+	}
+	
+	public void removeSyncController(Account account) {
+		for (SyncController syncController : syncControllers) {
+			if (syncController.getAccount() == account) {
+				syncController.stop();
+				syncControllers.remove(syncController);
+			}
+		}
+	}
+	
 	// Active account
 	public Account getActiveAccount() {
 		return activeAccount;
 	}
 
 	public void setActiveAccount(Account activeAccount) {
+		Account oldActiveAccount = this.activeAccount;
 		this.activeAccount = activeAccount;
-		notifyChangeListeners(ACTIVE_ACCOUNT);
+		notifyChangeListeners(ACTIVE_ACCOUNT, oldActiveAccount, activeAccount);
 	}
 
 	// Active folder
@@ -88,15 +126,20 @@ public class Client implements Serializable {
 		notifyChangeListeners(ACTIVE_MESSAGE);
 	}
 
+	
 	/*
 	 * Property listeners
 	 */
 	private void notifyChangeListeners(String propertyName) {
+		notifyChangeListeners(propertyName, null, null);
+	}
+	
+	private void notifyChangeListeners(String propertyName, Object oldValue, Object newValue) {
 		for (PropertyChangeListener listener : listeners) {
-			listener.propertyChange(new PropertyChangeEvent(this, propertyName, null, null));
+			listener.propertyChange(new PropertyChangeEvent(this, propertyName, oldValue, newValue));
 		}
 	}
-
+	
 	public void addChangeListener(PropertyChangeListener listener) {
 		listeners.add(listener);
 	}

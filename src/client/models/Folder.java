@@ -82,6 +82,20 @@ public class Folder {
 		return Collections.unmodifiableList(subFolders);
 	}
 	
+	public Folder getFolderFromName(String name) {
+		for (Folder subFolder : subFolders) {
+			if (subFolder.getName().equals(name)) {
+				return subFolder;
+			}
+		}
+		throw new IllegalArgumentException("No subfolder with name "+name); 
+	}
+	
+	public void removeFolder(Folder folder) {
+		subFolders.remove(folder);
+		notifyChangeListeners(this, FOLDERS);
+	}
+	
 	/*
 	 * Property listeners
 	 */

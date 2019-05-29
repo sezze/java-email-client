@@ -4,15 +4,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-
-import javax.mail.NoSuchProviderException;
-import javax.mail.Session;
-import javax.mail.Store;
-
-import client.Main;
 
 public class Account {
+	
+	// Property names
+	public static final String DETAILS = "details";
+	public static final String ROOT_FOLDER = "rootFolder";
+	public static final String SYNC_RATE = "syncRate";
 	
 	// Properties
 	private String displayName;
@@ -21,17 +19,14 @@ public class Account {
 	private String password;
 	private String smtpAddress;
 	private String imapAddress;
-	private Folder rootFolder;
-	
-	// Java Mail properties
-	private Session session;
-	private Store store;
+	private Folder rootFolder = new Folder("root");
+	private int syncRate;
 	
 	// Property listeners
 	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
 
 	public Account(String displayName, String address, String username, String password, String smtpAddress,
-			String imapAddress) {
+			String imapAddress, int syncRate) {
 		// Set property values
 		this.displayName = displayName;
 		this.address = address;
@@ -39,6 +34,7 @@ public class Account {
 		this.password = password;
 		this.smtpAddress = smtpAddress;
 		this.imapAddress = imapAddress;
+		this.syncRate = syncRate;
 	}
 	
 	/*
@@ -52,7 +48,7 @@ public class Account {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
-		notifyChangeListeners();
+		notifyChangeListeners(DETAILS);
 	}
 	
 	// Username
@@ -62,7 +58,7 @@ public class Account {
 
 	public void setUsername(String username) {
 		this.username = username;
-		notifyChangeListeners();
+		notifyChangeListeners(DETAILS);
 	}
 	
 	// Password
@@ -72,7 +68,7 @@ public class Account {
 
 	public void setPassword(String password) {
 		this.password = password;
-		notifyChangeListeners();
+		notifyChangeListeners(DETAILS);
 	}
 
 	// SMTP Address
@@ -82,7 +78,7 @@ public class Account {
 
 	public void setSmtpAddress(String smtpAddress) {
 		this.smtpAddress = smtpAddress;
-		notifyChangeListeners();
+		notifyChangeListeners(DETAILS);
 	}
 
 	// IMAP Address
@@ -92,7 +88,7 @@ public class Account {
 
 	public void setImapAddress(String imapAddress) {
 		this.imapAddress = imapAddress;
-		notifyChangeListeners();
+		notifyChangeListeners(DETAILS);
 	}
 
 	// Root folder
@@ -100,33 +96,32 @@ public class Account {
 		return rootFolder;
 	}
 	
-	// Java Mail Session
-	public Session getSession() {
-		return session;
-	}
-
-	public void setSession(Session session) {
-		this.session = session;
-		try {
-			// Try to set store from session
-			this.store = session.getStore("imaps");
-		} catch (NoSuchProviderException e) {
-			Main.LOGGER.log(Level.SEVERE, "Failed to get store from session", e);
-			System.exit(1);
-		}
+	public void setRootFolder(Folder rootFolder) {
+		this.rootFolder = rootFolder;
+		notifyChangeListeners(ROOT_FOLDER);
 	}
 	
-	// Java Mail Store
-	public Store getStore() {
-		return store;
+	// Sync rate
+	public int getSyncRate() {
+		return syncRate;
 	}
+
+	public void setSyncRate(int syncRate) {
+		this.syncRate = syncRate;
+		notifyChangeListeners(SYNC_RATE);
+	}
+	
 	
 	/*
 	 * Property listener
 	 */
-	private void notifyChangeListeners() {
+	private void notifyChangeListeners(String propertyName) {
+		notifyChangeListeners(propertyName, null, null);
+	}
+	
+	private void notifyChangeListeners(String propertyName, Object oldValue, Object newValue) {
 		for (PropertyChangeListener listener : listeners) {
-			listener.propertyChange(new PropertyChangeEvent(this, null, null, null));
+			listener.propertyChange(new PropertyChangeEvent(this, propertyName, oldValue, newValue));
 		}
 	}
 	
