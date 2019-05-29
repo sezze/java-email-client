@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.logging.Level;
 
+import client.Main;
 import client.models.Message;
 
 public class CacheController {
@@ -19,10 +21,8 @@ public class CacheController {
 			out.writeObject(object);
 			out.close();
 			fileOut.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			Main.LOGGER.log(Level.SEVERE, "Failed to cache " + category, e);
 		}
 	}
 	

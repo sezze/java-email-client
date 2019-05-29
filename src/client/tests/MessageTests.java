@@ -14,8 +14,8 @@ import javax.mail.Store;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import client.mappers.MessageMapper;
 import client.models.Contact;
-import client.util.MessageMapper;
 
 class MessageTests {
 
@@ -85,7 +85,7 @@ class MessageTests {
 //	}
 	
 	@Test
-	public void convertMessages() {
+	public void convertMessages() throws MessagingException, IOException {
 		System.out.println("\n\nTesting out conversion");
 		ArrayList<Contact> recipients = new ArrayList<Contact>();
 		recipients.add(new Contact("Sebastian", "sebastian@nanyabiz.nes"));
@@ -96,8 +96,8 @@ class MessageTests {
 				.body("WOWA, <b><i>this</i> is the body of the email!!</b>", true)
 				.isFlagged(true).build();
 		System.out.println(testMessage.getRecipients());
-		Message javaMail = MessageMapper.from(testMessage);
-		client.models.Message converted = MessageMapper.from(javaMail);
+		Message javaMail = MessageMapper.map(testMessage);
+		client.models.Message converted = MessageMapper.map(javaMail);
 	}
 	
 //	@Test

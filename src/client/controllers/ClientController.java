@@ -3,6 +3,7 @@ package client.controllers;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 import client.Main;
 import client.models.Account;
@@ -32,35 +33,28 @@ public class ClientController implements Initializable {
 	@FXML
 	private VBox folderTreeContainer;
 
+	private FolderTree folderTree;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		Account account = new Account("Test User", "test@nrng.gq", "test@nrng.gq", "TestPassword", "smtp.yandex.com",
-				"imap.yandex.com");
-		Main.client.addAccount(account);
-
-		Message message = new Message.Builder().sender(new Contact("Bill Gates", "bill@microsoft.com"))
-				.addRecipients(new ArrayList<Contact>() {{new Contact("Sebastian", "sebbe.aarnio@hotmail.com");}})
-				.subject("Dear Sebastian, I have now sent you the million dollars that I've promised you!")
-				.body("WOWA, <b><i>this</i> is the body</b>", true).build();
-		messagePane.getChildren().add(new MessageListItemPane(message));
-		CacheController.cacheMessage(message);
-		Folder testFolder = new Folder("Rooty");
-		Folder inboxy = new Folder("INBOXY");
-		testFolder.addFolder(inboxy);
-		Folder testy = new Folder("TESTY");
-		inboxy.addFolder(testy);
-		testFolder.addFolder(new Folder("1"));
-		testFolder.addFolder(new Folder("2"));
-		testFolder.addFolder(new Folder("3"));
-		testFolder.addFolder(new Folder("4"));
-		testFolder.addFolder(new Folder("5"));
-		testFolder.addFolder(new Folder("6"));
-		testFolder.addFolder(new Folder("7"));
-		FolderTree folderTree = new FolderTree(testFolder);
+		
+		/*
+		 * Child components
+		 */
+		
+		// Create child components
+		folderTree = new FolderTree();
 		folderTreeContainer.getChildren().add(folderTree);
 
+		// Initialize child components
 		updateAccountsComboBox();
-		Main.client.addChangeListener(e -> {
+
+		/*
+		 * Event listeners
+		 */
+		
+		// Client listener
+		Main.CLIENT.addChangeListener(e -> {
 			switch (e.getPropertyName()) {
 			case Client.ACCOUNTS:
 				updateAccountsComboBox();
@@ -68,22 +62,26 @@ public class ClientController implements Initializable {
 			}
 		});
 
-		// Set active folder
+		// Folder tree selection listener
 		folderTree.getSelectionModel().selectedItemProperty()
 				.addListener((ObservableValue<? extends TreeItem<Folder>> o, TreeItem<Folder> oldValue,
 						TreeItem<Folder> newValue) -> {
-					Main.client.setActiveFolder(newValue.getValue());
-				});
+							// Set active folder to selection
+							Main.CLIENT.setActiveFolder(newValue.getValue());
+						});
 	}
 
 	@FXML
 	private void onAccountsComboBoxChange() {
-		Main.client.setActiveAccount(accountsComboBox.getValue());
+		// Set active account to account combo box value
+		Main.CLIENT.setActiveAccount(accountsComboBox.getValue());
 	}
 
 	private void updateAccountsComboBox() {
-		accountsComboBox.setItems(FXCollections.observableArrayList(Main.client.getAccounts()));
-		accountsComboBox.setValue(Main.client.getActiveAccount());
+		// Set items to available accounts
+		accountsComboBox.setItems(FXCollections.observableArrayList(Main.CLIENT.getAccounts()));
+		// Set selection to active account
+		accountsComboBox.setValue(Main.CLIENT.getActiveAccount());
 	}
 
 }

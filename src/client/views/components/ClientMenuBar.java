@@ -16,9 +16,8 @@ public class ClientMenuBar extends MenuBar {
 	public ClientMenuBar(Stage stage, Scene scene) {
 
 		/*
-		 * File ---------------------------------------------------------------
+		 * File menu
 		 */
-
 		Menu file = new Menu("File");
 
 		// Quit (ALT + F4)
@@ -31,9 +30,8 @@ public class ClientMenuBar extends MenuBar {
 		file.getItems().addAll(quit);
 		
 		/*
-		 * Debug --------------------------------------------------------------
+		 * Debug menu
 		 */
-
 		Menu debug = new Menu("Debug");
 		
 		// Reload stylesheet
@@ -47,27 +45,26 @@ public class ClientMenuBar extends MenuBar {
 		// Add account
 		MenuItem addAccount = new MenuItem("Add account");
 		addAccount.setOnAction(e -> {
-			Main.client.addAccount(new Account("Herbert Love", "herbert@yahoo.com", "herbert@yahoo.com", "herbertthesherbert59", "smtp.yahoo.com", "imap.yahoo.com"));
+			Main.CLIENT.addAccount(new Account("Herbert Love", "herbert@yahoo.com", "herbert@yahoo.com", "herbertthesherbert59", "smtp.yahoo.com", "imap.yahoo.com"));
 		});
 		
 		// Settings page
 		MenuItem settingsPage = new MenuItem("Settings page");
 		settingsPage.setOnAction(e -> {
-			//model.setActivePage(model.getSettingsPage());
+			// model.setActivePage(model.getSettingsPage());
 		});
 		
 		// Main page
 		MenuItem mainPage = new MenuItem("Main page");
 		mainPage.setOnAction(e -> {
-			//model.setActivePage(model.getMainPage());
+			// model.setActivePage(model.getMainPage());
 		});
 
 		debug.getItems().addAll(reloadStyle, addAccount, settingsPage, mainPage);
 
 		/*
-		 * Add menus -----------------------------------------------------------
+		 * Add menus
 		 */
-
 		getMenus().addAll(file, debug);
 
 	}

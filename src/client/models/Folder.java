@@ -9,14 +9,17 @@ import java.util.List;
 
 public class Folder {
 
+	// Property names
 	public static final String NAME = "name";
 	public static final String FOLDERS = "folders";
 	public static final String MESSAGES = "messages";
 	
+	// Properties
 	private String name;
 	private List<Folder> subFolders;
 	private List<Message> messages;
 	
+	// Property listeners
 	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
 
 	public Folder(String name) {
@@ -25,6 +28,11 @@ public class Folder {
 		this.messages = new ArrayList<Message>();
 	}
 
+	/*
+	 * Property getters and setters
+	 */
+	
+	// Name
 	public String getName() {
 		return name;
 	}
@@ -34,6 +42,7 @@ public class Folder {
 		notifyChangeListeners(this, NAME);
 	}
 
+	// Messages
 	public void addMessage(Message message) {
 		messages.add(message);
 		notifyChangeListeners(this, MESSAGES);
@@ -57,7 +66,8 @@ public class Folder {
 	public List<Message> getMessages() {
 		return Collections.unmodifiableList(messages);
 	}
-
+	
+	// Folders
 	public void addFolder(Folder folder) {
 		subFolders.add(folder);
 		notifyChangeListeners(this, FOLDERS);
@@ -72,6 +82,9 @@ public class Folder {
 		return Collections.unmodifiableList(subFolders);
 	}
 	
+	/*
+	 * Property listeners
+	 */
 	private void notifyChangeListeners(Folder folder, String propertyName) {
 		for (PropertyChangeListener listener : listeners) {
 			listener.propertyChange(new PropertyChangeEvent(folder, propertyName, null, null));
@@ -86,6 +99,9 @@ public class Folder {
 		listeners.remove(listener);
 	}
 	
+	/*
+	 * To string
+	 */
 	@Override
 	public String toString() {
 		return name;

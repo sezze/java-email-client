@@ -30,7 +30,7 @@ public class SyncController {
 	}
 	
 	public void syncFromServer() {
-		Folder rootFolder = account.getStore().getDefaultFolder();
+		//Folder rootFolder = account.getStore().getDefaultFolder();
 	}
 	
 	

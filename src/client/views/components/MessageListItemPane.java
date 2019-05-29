@@ -14,11 +14,11 @@ public class MessageListItemPane extends VBox {
 	
 	private Message message;
 	
+	// Child components
 	private Pane senderPane;
 	private Label subjectLabel;
 	private Label attachmentLabel;
 	private Label dateLabel;
-	
 	private HBox lowerRow;
 	private HBox attachmentRow;
 	private HBox dateRow;
@@ -32,7 +32,7 @@ public class MessageListItemPane extends VBox {
 		subjectLabel = new Label(message.getSubject());
 		
 		// Attachment row
-		attachmentLabel = new Label(Integer.toString(message.getAttachements().size()));
+		attachmentLabel = new Label(Integer.toString(message.getAttachments().size()));
 		ImageView attachmentIcon = new ImageView("client/assets/images/clip.png");
 		attachmentIcon.setFitWidth(18);
 		attachmentIcon.setFitHeight(18);

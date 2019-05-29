@@ -3,19 +3,24 @@ package client.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+
+import client.Main;
 
 public class Message implements Serializable {
 
+	// Properties
 	private Contact sender;
-	private List<Contact> recipients;
-	private List<Contact> ccRecipients;
-	private List<Contact> bccRecipients;
+	private List<Contact> recipients = new ArrayList<Contact>();
+	private List<Contact> ccRecipients = new ArrayList<Contact>();
+	private List<Contact> bccRecipients = new ArrayList<Contact>();
 	private String subject;
 	private Date date;
 	private String body;
-	private List<Attachment> attachments;
+	private List<Attachment> attachments = new ArrayList<Attachment>();
 	
 	private boolean isAnswered;
 	private boolean isDeleted;
@@ -24,25 +29,156 @@ public class Message implements Serializable {
 	private boolean isSeen;
 	
 	private boolean isHTML;
+	
+	// Serialization ID
 	private static final long serialVersionUID = 5557600110663396148L;
 	
-	private Message() {
-		recipients = new ArrayList<Contact>();
-		ccRecipients = new ArrayList<Contact>();
-		bccRecipients = new ArrayList<Contact>();
-		attachments = new ArrayList<Attachment>();
+	private Message() {}
+
+	/*
+	 * Property getters and setters
+	 */
+	
+	// Sender
+	public Contact getSender() {
+		return sender;
+	}
+
+	public void setSender(Contact sender) {
+		this.sender = sender;
+	}
+
+	// Recipients
+	public List<Contact> getRecipients() {
+		return Collections.unmodifiableList(recipients);
+	}
+
+	public void addRecipients(Collection<? extends Contact> recipients) {
+		this.recipients.addAll(recipients);
 	}
 	
+	// CC Recipients
+	public List<Contact> getCcRecipients() {
+		return Collections.unmodifiableList(ccRecipients);
+	}
+
+	public void addCcRecipients(Collection<? extends Contact> ccRecipients) {
+		this.ccRecipients.addAll(ccRecipients);
+	}
+
+	// BCC Recipients
+	public List<Contact> getBccRecipients() {
+		return Collections.unmodifiableList(bccRecipients);
+	}
+
+	public void addBccRecipients(Collection<? extends Contact> bccRecipients) {
+		this.bccRecipients.addAll(bccRecipients);
+	}
+	
+	// Subject
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	
+	// Date
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	// Body
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+	
+	// Attachments
+	public List<Attachment> getAttachments() {
+		return Collections.unmodifiableList(attachments);
+	}
+
+	public void addAttachments(Collection<? extends Attachment> attachements) {
+		this.attachments.addAll(attachements);
+	}
+	
+	// Is answered
+	public boolean isAnswered() {
+		return isAnswered;
+	}
+	
+	public void setAnswered(boolean isAnswered) {
+		this.isAnswered = isAnswered;
+	}
+
+	// Is deleted
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	// Is flagged
+	public boolean isFlagged() {
+		return isFlagged;
+	}
+
+	public void setFlagged(boolean isFlagged) {
+		this.isFlagged = isFlagged;
+	}
+
+	// Is draft
+	public boolean isDraft() {
+		return isDraft;
+	}
+
+	public void setDraft(boolean isDraft) {
+		this.isDraft = isDraft;
+	}
+
+	// Is seen
+	public boolean isSeen() {
+		return isSeen;
+	}
+
+	public void setSeen(boolean isSeen) {
+		this.isSeen = isSeen;
+	}
+
+	// Is HTML (body)
+	public boolean isHTML() {
+		return isHTML;
+	}
+
+	public void setHTML(boolean isHTML) {
+		this.isHTML = isHTML;
+	}
+	
+	/*
+	 * Builder
+	 */
 	public static class Builder {
 		
+		// Properties
 		private Contact sender;
-		private List<Contact> recipients;
-		private List<Contact> ccRecipients;
-		private List<Contact> bccRecipients;
+		private List<Contact> recipients = new ArrayList<Contact>();
+		private List<Contact> ccRecipients = new ArrayList<Contact>();
+		private List<Contact> bccRecipients = new ArrayList<Contact>();
 		private String subject;
 		private Date date;
 		private String body;
-		private List<Attachment> attachments;
+		private List<Attachment> attachments = new ArrayList<Attachment>();
 		
 		private boolean isAnswered;
 		private boolean isDeleted;
@@ -52,45 +188,40 @@ public class Message implements Serializable {
 		
 		private boolean isHTML;
 		
-		public Builder() {
-			recipients = new ArrayList<Contact>();
-			ccRecipients = new ArrayList<Contact>();
-			bccRecipients = new ArrayList<Contact>();
-			attachments = new ArrayList<Attachment>();
-		}
+		public Builder() {}
 		
 		public Message build() {
 			Message msg = new Message();
 			
-			try {
-				// Required
-				msg.setSender(sender);
-				msg.setSubject(subject);
-				msg.addRecipients(recipients);
-				msg.setDate(date != null ? date : new Date()); // If not specified, use current date
-				msg.setBody(body);
-				msg.setHTML(isHTML);
-				
-				// Optional
-				if (ccRecipients != null) msg.addCcRecipients(ccRecipients);
-				if (bccRecipients != null) msg.addBccRecipients(bccRecipients);
-				if (attachments != null) msg.addAttachments(attachments);
-				msg.setAnswered(isAnswered);
-				msg.setDeleted(isDeleted);
-				msg.setFlagged(isFlagged);
-				msg.setDraft(isDraft);
-				msg.setSeen(isSeen);			
-				
-				return msg;
-				
-			} catch (NullPointerException e) {
-				System.out.println("Tried to create a message without required fields:");
-				System.out.println("Sender, recipients, subject, body");
-				e.printStackTrace();
+			if (sender == null || subject == null || recipients.size() == 0 || body == null) {
+				Main.LOGGER.log(Level.SEVERE, "Missing required builder field. Required: Sender, recipients, subject, body", new IllegalStateException());
+				System.exit(1);
 			}
+			
+			// Required
+			msg.setSender(sender);
+			msg.setSubject(subject);
+			msg.addRecipients(recipients);
+			msg.setDate(date != null ? date : new Date()); // If not specified, use current date
+			msg.setBody(body);
+			msg.setHTML(isHTML);
+				
+			// Optional
+			if (ccRecipients != null) msg.addCcRecipients(ccRecipients);
+			if (bccRecipients != null) msg.addBccRecipients(bccRecipients);
+			if (attachments != null) msg.addAttachments(attachments);
+			msg.setAnswered(isAnswered);
+			msg.setDeleted(isDeleted);
+			msg.setFlagged(isFlagged);
+			msg.setDraft(isDraft);
+			msg.setSeen(isSeen);
 			
 			return msg;
 		}
+		
+		/*
+		 * Builder setters
+		 */
 		
 		public Builder sender(Contact sender) {
 			this.sender = sender;
@@ -163,118 +294,6 @@ public class Message implements Serializable {
 			return this;
 		}
 		
-	}
-
-	public Contact getSender() {
-		return sender;
-	}
-
-	public void setSender(Contact sender) {
-		this.sender = sender;
-	}
-
-	public List<Contact> getRecipients() {
-		return recipients;
-	}
-
-	public void addRecipients(Collection<? extends Contact> recipients) {
-		this.recipients.addAll(recipients);
-	}
-
-	public List<Contact> getCcRecipients() {
-		return ccRecipients;
-	}
-
-	public void addCcRecipients(Collection<? extends Contact> ccRecipients) {
-		this.ccRecipients.addAll(ccRecipients);
-	}
-
-	public List<Contact> getBccRecipients() {
-		return bccRecipients;
-	}
-
-	public void addBccRecipients(Collection<? extends Contact> bccRecipients) {
-		this.bccRecipients.addAll(bccRecipients);
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getBody() {
-		return body;
-	}
-
-	public void setBody(String body) {
-		this.body = body;
-	}
-
-	public List<Attachment> getAttachements() {
-		return attachments;
-	}
-
-	public void addAttachments(Collection<? extends Attachment> attachements) {
-		this.attachments.addAll(attachements);
-	}
-
-	public boolean isAnswered() {
-		return isAnswered;
-	}
-
-	public void setAnswered(boolean isAnswered) {
-		this.isAnswered = isAnswered;
-	}
-
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-
-	public boolean isFlagged() {
-		return isFlagged;
-	}
-
-	public void setFlagged(boolean isFlagged) {
-		this.isFlagged = isFlagged;
-	}
-
-	public boolean isDraft() {
-		return isDraft;
-	}
-
-	public void setDraft(boolean isDraft) {
-		this.isDraft = isDraft;
-	}
-
-	public boolean isSeen() {
-		return isSeen;
-	}
-
-	public void setSeen(boolean isSeen) {
-		this.isSeen = isSeen;
-	}
-
-	public boolean isHTML() {
-		return isHTML;
-	}
-
-	public void setHTML(boolean isHTML) {
-		this.isHTML = isHTML;
 	}
 	
 }

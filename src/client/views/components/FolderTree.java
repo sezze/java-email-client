@@ -20,12 +20,15 @@ public class FolderTree extends TreeView<Folder> {
 	}
 	
 	public FolderTree() {
+		// Scale to parent
 		maxWidth(USE_PREF_SIZE);
 		VBox.setVgrow(this, Priority.ALWAYS);
 		
+		// Listen for changes in folder
 		folderListener = new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
+				// Only update if structure or name change (Not new messages, not visible in tree)
 				if (evt.getPropertyName() == Folder.FOLDERS || evt.getPropertyName() == Folder.NAME) {
 					updateTree();
 				}
@@ -41,6 +44,7 @@ public class FolderTree extends TreeView<Folder> {
 	}
 	
 	private void updateTree(TreeItem<Folder> parent, Folder parentFolder) {
+		// Recursivly go through child folders and add to tree 
 		for (Folder folder : parentFolder.getFolders()) {
 			TreeItem<Folder> item = new TreeItem<Folder>(folder);
 			parent.getChildren().add(item);
@@ -54,10 +58,15 @@ public class FolderTree extends TreeView<Folder> {
 
 	public void setFolder(Folder folder) {
 		if (this.folder != null) {
+			// If currently listening to a previous folder
 			folder.removeChangeListener(folderListener);
 		}
+		
+		// Set folder and update tree
 		this.folder = folder;
 		updateTree();
+		
+		// Listen for folder changes
 		folder.addChangeListener(folderListener);
 	}
 	
