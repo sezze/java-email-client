@@ -1,3 +1,6 @@
-server=imap.example.com
-user=username
-password=password
+displayName=User
+address=user@example.com
+username=username
+password=changeme
+smtpAddress=smtp.example.com
+imapAddress=imap.example.com
