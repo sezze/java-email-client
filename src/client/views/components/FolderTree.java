@@ -32,12 +32,7 @@ public class FolderTree extends TreeView<Folder> {
 				// Only update if structure or name change (Not new messages, not visible in tree)
 				System.out.println("FOLDERTREE");
 				if (evt.getPropertyName() == Folder.FOLDERS || evt.getPropertyName() == Folder.NAME) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							updateTree();
-						}
-					});
+					Platform.runLater(() -> updateTree());
 				}
 			}
 		};

@@ -3,22 +3,120 @@
 }
 
 .root {
-	-c-bg: #f8f9f2;
-	-c-fg: #c5bcb5;
-	-c-primary: #ff3a3a;
-	-c-highlight: #f4b349;
-	-c-text: #0f121c;
-	
-	-c-bg-alt: #E2E3DC;
-	-c-fg-alt: #B4ABA5;
-	-c-primary-alt: #FF4B4B;
-	-c-highlight-alt: #F5B959;
-	-c-text-alt: #242730;
-	
 	-fx-base: white;
 	-fx-background: white;
 	-fx-control-inner-background: white;
 	-fx-dark-text-color: black;
     -fx-mid-text-color: #0f121c;
     -fx-light-text-color: white;
+}
+
+.split-pane *.split-pane-divider {
+	-fx-cursor: normal;
+	-fx-padding: 0;
+}
+
+/* Combo box base */
+.combo-box-base {
+	-fx-background-color: derive(-fx-base, -5%);
+	-fx-padding: 4px 0;
+	-fx-background-radius: 0;
+}
+.combo-box-base:hover {
+    -fx-background-color: derive(-fx-base, -2%);
+    -fx-effect: dropshadow( two-pass-box , rgba(0,0,0,0.2) , 2, 0 , 0 , 2 );
+}
+.combo-box-base:showing {
+    -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+}
+ 
+.combo-box-base:focused {
+    -fx-background-color: derive(-fx-base, -2%);
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-effect: dropshadow( two-pass-box , rgba(0,0,0,0.2) , 4, 0 , 0 , 4 );
+}
+
+/* Lists */
+.tree-view:focused .tree-cell:focused {
+    -fx-background-color: -fx-accent;
+}
+
+.list-view .list-cell:focused {
+    -fx-background-color: -fx-accent;
+}
+
+/* Text area */
+.text-area {
+	-fx-background-color: -fx-text-box-border, derive(-fx-base, -5%);
+	-fx-background-insets: 0, 1.25;
+	-fx-background-radius: 0;
+	-fx-padding: 0;
+}
+.text-area:focused {
+    -fx-background-color: -fx-focus-color, derive(-fx-base, -2%);
+}
+
+/* Scroll bar */
+.scroll-bar {
+	-fx-background-color: derive(-fx-text-box-border, -5%), derive(-fx-base, -2%);
+	-fx-background-radius: 0;
+	-fx-padding: 4px -2px 4px -1px;
+}
+.scroll-bar:vertical {
+	-fx-pref-width: 14px;
+}
+.scroll-bar:horizontal {
+	-fx-pref-height: 14px;
+}
+.scroll-bar .thumb {
+	-fx-background-color: -fx-text-box-border;
+	-fx-background-radius: 0;
+	-fx-padding: 8px;
+}
+.scroll-bar .thumb:hover {
+	-fx-background-color: derive(-fx-text-box-border, -5%);
+}
+.scroll-bar .thumb:pressed {
+	-fx-background-color: derive(-fx-text-box-border, -10%);
+}
+
+/* Button */
+.button {
+	-fx-background-color: derive(-fx-base, -5%);
+	-fx-background-radius: 0;
+	-fx-padding: 6px 12px;
+}
+.button:hover {
+	-fx-background-color: derive(-fx-base, -3%);
+	-fx-effect: dropshadow( two-pass-box , rgba(0,0,0,0.2) , 2, 0 , 0 , 2 );
+	
+}
+.button:pressed {
+	-fx-background-color: derive(-fx-base, -10%);
+	-fx-effect: innershadow( two-pass-box , rgba(0,0,0,0.3) , 4, 0.0 , 0 , 1 );
+}
+
+/* Text field */
+.text-field {
+	-fx-background-color: -fx-text-box-border, -fx-base;
+	-fx-background-insets: 0, 1;
+	-fx-background-radius: 0;
+	-fx-padding: 8px;
+}
+.text-field:focused {
+	-fx-background-color: -fx-focus-color, -fx-base;
+	-fx-background-insets: 0, 1;
+	-fx-effect: dropshadow( two-pass-box , rgba(0,0,0,0.2) , 2, 0 , 0 , 2 );
+}
+
+/* Menu bar */
+.menu-bar {
+	-fx-background-color: derive(-fx-base, -5%);
+	-fx-padding: 0;
+	-fx-spacing: 0;
+}
+
+.menu-bar .menu-button {
+	-fx-padding: 2px 8px;
 }

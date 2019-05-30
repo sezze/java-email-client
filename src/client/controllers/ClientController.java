@@ -44,12 +44,7 @@ public class ClientController implements Initializable {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName() == Account.ROOT_FOLDER) {
-					Platform.runLater(new Runnable() {
-						@Override
-						public void run() {
-							folderTree.setFolder(Main.CLIENT.getActiveAccount().getRootFolder());
-						}
-					});
+					Platform.runLater(() -> folderTree.setFolder(Main.CLIENT.getActiveAccount().getRootFolder()));
 				}
 			}
 		};
@@ -81,12 +76,7 @@ public class ClientController implements Initializable {
 					((Account) e.getOldValue()).removeChangeListener(activeAccountListener);					
 				}
 				Main.CLIENT.getActiveAccount().addChangeListener(activeAccountListener);
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						folderTree.setFolder(Main.CLIENT.getActiveAccount().getRootFolder());
-					}
-				});
+				Platform.runLater(() -> folderTree.setFolder(Main.CLIENT.getActiveAccount().getRootFolder()));
 				break;
 			}
 		});
