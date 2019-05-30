@@ -12,21 +12,23 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 public class ClientMenuBar extends MenuBar {
-	public ClientMenuBar(Stage stage, Scene scene) {
+	public ClientMenuBar(Stage stage, Scene scene, Main main) {
 
 		/*
 		 * File menu
 		 */
 		Menu file = new Menu("File");
+		
+		// Open settings
+		MenuItem settings = new MenuItem("Settings");
+		settings.setOnAction(e -> main.openSettings());
 
 		// Quit (ALT + F4)
 		MenuItem quit = new MenuItem("Quit");
 		quit.setAccelerator(new KeyCodeCombination(KeyCode.F4, KeyCombination.ALT_DOWN));
-		quit.setOnAction(e -> {
-			stage.close();
-		});
+		quit.setOnAction(e -> stage.close());
 
-		file.getItems().addAll(quit);
+		file.getItems().addAll(settings, quit);
 		
 		
 		/*
@@ -41,20 +43,8 @@ public class ClientMenuBar extends MenuBar {
 			scene.getStylesheets().clear();
 			scene.getStylesheets().addAll(Main.STYLESHEETS);
 		});
-		
-		// Settings page
-		MenuItem settingsPage = new MenuItem("Settings page");
-		settingsPage.setOnAction(e -> {
-			// model.setActivePage(model.getSettingsPage());
-		});
-		
-		// Main page
-		MenuItem mainPage = new MenuItem("Main page");
-		mainPage.setOnAction(e -> {
-			// model.setActivePage(model.getMainPage());
-		});
 
-		debug.getItems().addAll(reloadStyle, settingsPage, mainPage);
+		debug.getItems().addAll(reloadStyle);
 
 		
 		/*

@@ -45,7 +45,7 @@ public class Client implements Serializable {
 		if (activeAccount == null)
 			setActiveAccount(account);
 		
-		// Add account's connection and sync controller
+		// Add account's connection and sync controllers
 		addSyncController(account, addConnectionController(account));
 		notifyChangeListeners(ACCOUNTS);
 	}
@@ -58,6 +58,18 @@ public class Client implements Serializable {
 			else
 				setActiveAccount(null);
 		}
+		
+		for (SyncController ctrl : syncControllers) {
+			if (ctrl.getAccount() == account) {
+				ctrl.stop();
+				syncControllers.remove(ctrl);
+				ctrl.getConnectionController().stop();
+				connectionControllers.remove(ctrl.getConnectionController());
+			}
+		}
+		
+		
+		
 		notifyChangeListeners(ACCOUNTS);
 	}
 
@@ -70,6 +82,10 @@ public class Client implements Serializable {
 		ConnectionController con = new ConnectionController(account);
 		connectionControllers.add(con);
 		return con;
+	}
+	
+	public List<ConnectionController> getConnectionControllers() {
+		return Collections.unmodifiableList(connectionControllers);
 	}
 	
 	public void removeConnectionController(Account account) {
@@ -86,6 +102,10 @@ public class Client implements Serializable {
 		syncControllers.add(new SyncController(account, con));
 	}
 	
+	public List<SyncController> getSyncControllers() {
+		return Collections.unmodifiableList(syncControllers);
+	}
+
 	public void removeSyncController(Account account) {
 		for (SyncController syncController : syncControllers) {
 			if (syncController.getAccount() == account) {
@@ -101,9 +121,9 @@ public class Client implements Serializable {
 	}
 
 	public void setActiveAccount(Account activeAccount) {
-		Account oldActiveAccount = this.activeAccount;
+		Account oldActiveAccount = getActiveAccount();
 		this.activeAccount = activeAccount;
-		notifyChangeListeners(ACTIVE_ACCOUNT, oldActiveAccount, activeAccount);
+		notifyChangeListeners(ACTIVE_ACCOUNT, oldActiveAccount, getActiveAccount());
 	}
 
 	// Active folder
@@ -112,8 +132,9 @@ public class Client implements Serializable {
 	}
 
 	public void setActiveFolder(Folder activeFolder) {
+		Folder oldActiveFolder = getActiveFolder();
 		this.activeFolder = activeFolder;
-		notifyChangeListeners(ACTIVE_FOLDER);
+		notifyChangeListeners(ACTIVE_FOLDER, oldActiveFolder, getActiveFolder());
 	}
 
 	// Active message

@@ -1,5 +1,7 @@
 package client.models;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,13 +16,13 @@ public class Message implements Serializable {
 
 	// Properties
 	private Contact sender;
-	private List<Contact> recipients = new ArrayList<Contact>();
-	private List<Contact> ccRecipients = new ArrayList<Contact>();
-	private List<Contact> bccRecipients = new ArrayList<Contact>();
+	private ArrayList<Contact> recipients = new ArrayList<Contact>();
+	private ArrayList<Contact> ccRecipients = new ArrayList<Contact>();
+	private ArrayList<Contact> bccRecipients = new ArrayList<Contact>();
 	private String subject;
 	private Date date;
 	private String body;
-	private List<Attachment> attachments = new ArrayList<Attachment>();
+	private ArrayList<Attachment> attachments = new ArrayList<Attachment>();
 	
 	private boolean isAnswered;
 	private boolean isDeleted;
@@ -30,11 +32,23 @@ public class Message implements Serializable {
 	
 	private boolean isHTML;
 	
+	private transient boolean isSetup;
+	
+	// Property listeners
+	private transient List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
+	
 	// Serialization ID
 	private static final long serialVersionUID = 5557600110663396148L;
 	
 	private Message() {}
-
+	
+	public void checkListeners() {
+		if (!isSetup) {
+			listeners = new ArrayList<PropertyChangeListener>();
+			isSetup = true;
+		}
+	}
+	
 	/*
 	 * Property getters and setters
 	 */
@@ -118,6 +132,7 @@ public class Message implements Serializable {
 	
 	public void setAnswered(boolean isAnswered) {
 		this.isAnswered = isAnswered;
+		notifyChangeListeners();
 	}
 
 	// Is deleted
@@ -127,6 +142,7 @@ public class Message implements Serializable {
 
 	public void setDeleted(boolean isDeleted) {
 		this.isDeleted = isDeleted;
+		notifyChangeListeners();
 	}
 
 	// Is flagged
@@ -136,6 +152,7 @@ public class Message implements Serializable {
 
 	public void setFlagged(boolean isFlagged) {
 		this.isFlagged = isFlagged;
+		notifyChangeListeners();
 	}
 
 	// Is draft
@@ -145,6 +162,7 @@ public class Message implements Serializable {
 
 	public void setDraft(boolean isDraft) {
 		this.isDraft = isDraft;
+		notifyChangeListeners();
 	}
 
 	// Is seen
@@ -154,6 +172,7 @@ public class Message implements Serializable {
 
 	public void setSeen(boolean isSeen) {
 		this.isSeen = isSeen;
+		notifyChangeListeners();
 	}
 
 	// Is HTML (body)
@@ -164,6 +183,27 @@ public class Message implements Serializable {
 	public void setHTML(boolean isHTML) {
 		this.isHTML = isHTML;
 	}
+	
+	/*
+	 * Property listeners
+	 */
+	private void notifyChangeListeners() {
+		checkListeners();
+		for (PropertyChangeListener listener : listeners) {
+			listener.propertyChange(new PropertyChangeEvent(this, Folder.MESSAGES, null, null));
+		}
+	}
+	
+	public void addChangeListener(PropertyChangeListener listener) {
+		checkListeners();
+		listeners.add(listener);
+	}
+	
+	public void removeChangeListener(PropertyChangeListener listener) {
+		checkListeners();
+		listeners.remove(listener);
+	}
+	
 	
 	/*
 	 * Builder
@@ -193,7 +233,7 @@ public class Message implements Serializable {
 		public Message build() {
 			Message msg = new Message();
 			
-			if (sender == null || subject == null || recipients.size() == 0 || body == null) {
+			if (sender == null || subject == null || body == null) {
 				System.out.println(sender);
 				System.out.println(subject);
 				System.out.println(recipients);
@@ -300,6 +340,14 @@ public class Message implements Serializable {
 		
 		public boolean hasHTMLBody() {
 			return isHTML; 
+		}
+		
+		public boolean hasBody() {
+			return body != null; 
+		}
+
+		public String getBody() {
+			return body;
 		}
 		
 	}

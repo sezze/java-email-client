@@ -30,7 +30,6 @@ public class FolderTree extends TreeView<Folder> {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				// Only update if structure or name change (Not new messages, not visible in tree)
-				System.out.println("FOLDERTREE");
 				if (evt.getPropertyName() == Folder.FOLDERS || evt.getPropertyName() == Folder.NAME) {
 					Platform.runLater(() -> updateTree());
 				}
@@ -46,6 +45,7 @@ public class FolderTree extends TreeView<Folder> {
 	}
 	
 	private void updateTree(TreeItem<Folder> parent, Folder parentFolder) {
+		parent.setExpanded(true);
 		// Recursivly go through child folders and add to tree 
 		for (Folder folder : parentFolder.getFolders()) {
 			TreeItem<Folder> item = new TreeItem<Folder>(folder);
@@ -59,7 +59,6 @@ public class FolderTree extends TreeView<Folder> {
 	}
 
 	public void setFolder(Folder folder) {
-		System.out.println("SETFOLDER");
 		if (this.folder != null) {
 			// If currently listening to a previous folder
 			folder.removeChangeListener(folderListener);

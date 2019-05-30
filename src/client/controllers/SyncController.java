@@ -18,13 +18,14 @@ public class SyncController{
 	
 	/* 
 	 * TASKS:
-	 * Download new messages, download folder and message changes, message flags, (local folder changes), (send messages)
+	 * Download new messages✔️ ,download folder and message changes✔ ,message flags ✔️ ,(local folder changes), (send messages)
 	 */
 	
 	// Properties
 	private Account account;
 	private ConnectionController con;
 	private boolean isSyncing;
+	private boolean stopping;
 	
 	// Sync listeners
 	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
@@ -32,26 +33,22 @@ public class SyncController{
 	Thread syncTimerThread;
 	PropertyChangeListener folderListener;
 
-	public SyncController(Account account, ConnectionController con) {
-		System.out.println("A Sync Controller has been created.");
-		System.out.println(con);
-		
+	public SyncController(Account account, ConnectionController con) {		
 		this.account = account;
 		this.con = con;
 		
-		folderListener = new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				Main.LOGGER.log(Level.WARNING, "Syncing not implemented!");
-			}
-		};
+//		folderListener = new PropertyChangeListener() {
+//			@Override
+//			public void propertyChange(PropertyChangeEvent evt) {
+//				Main.LOGGER.log(Level.WARNING, "Syncing not implemented!");
+//			}
+//		};
 		
-		account.getRootFolder().addChangeListener(folderListener);
-				
+//		account.getRootFolder().addChangeListener(folderListener);
+		
 		syncTimerThread = new Thread() {
 			public void run() {
-				while (!interrupted()) {
-					
+				while (!interrupted() && !stopping) {
 					sync(account.getRootFolder());
 					
 					try {
@@ -66,10 +63,10 @@ public class SyncController{
 	}
 	
 	private void sync(Folder currentFolder) {
+		if (stopping) {
+			return;
+		}
 		setSyncing(true);
-		
-		System.out.println(currentFolder.getFolders().size());
-		
 		// Check if connected
 		if (!con.isConnected()) {
 			try {
@@ -92,17 +89,24 @@ public class SyncController{
 			Main.LOGGER.log(Level.WARNING, "Couldn't get server messages", e);
 		}
 		
-		System.out.println("Finished syncing");
-		
-		System.out.println(currentFolder.getFolders().size());
-		
 		setSyncing(false);
+		
 	}
 	
 	// Stop thread and listeners
 	public void stop() {
+		stopping = true;
 		syncTimerThread.interrupt();
 		account.getRootFolder().removeChangeListener(folderListener);
+	}
+	
+	public void stopAndJoin() {
+		stop();
+		try {
+			syncTimerThread.join();
+		} catch (InterruptedException e) {
+			Main.LOGGER.log(Level.FINE, "Sync thread interrupted.", e);
+		}
 	}
 	
 	
@@ -115,6 +119,7 @@ public class SyncController{
 		return account;
 	}
 
+	// Syncing
 	public boolean isSyncing() {
 		return isSyncing;
 	}
@@ -124,6 +129,12 @@ public class SyncController{
 		notifyChangeListeners(isSyncing);
 	}
 	
+	// Connection
+	public ConnectionController getConnectionController() {
+		return con;
+	}
+
+
 	/*
 	 * Property listeners
 	 */

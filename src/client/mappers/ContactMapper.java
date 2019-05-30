@@ -53,7 +53,10 @@ public class ContactMapper {
 	 * Address[] to List<Contact>
 	 */
 	public static List<Contact> map(Address[] addresses) {
-		return ContactMapper.map(Arrays.asList(addresses));
+		if (addresses == null) {
+			addresses = new InternetAddress[] {};
+		}
+		return ContactMapper.map(Arrays.asList(addresses)); 
 	}
 	
 }

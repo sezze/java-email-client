@@ -28,9 +28,14 @@ public class FolderMapper {
 		}
 		
 		Folder fldr = new Folder(folder.getName());
-		for (javax.mail.Message message : folder.getMessages()) {
+		
+		int messageCount = folder.getMessageCount();
+		int loadMessageCount = Math.min(messageCount, Main.MAX_MESSAGE_COUNT);
+		for (int i = 1; i <= loadMessageCount; i++) {
+			javax.mail.Message message = folder.getMessage(messageCount-i);
 			fldr.addMessage(MessageMapper.map(message));
 		}
+
 		for (javax.mail.Folder subfolder : folder.list()) {
 			fldr.addFolder(map(subfolder));
 		}
@@ -85,7 +90,10 @@ public class FolderMapper {
 			long messageDate;
 			Message m;
 			Flags f;
-			for (javax.mail.Message message : folder.getMessages()) {
+			int messageCount = folder.getMessageCount();
+			int loadMessageCount = Math.min(messageCount, Main.MAX_MESSAGE_COUNT);
+			for (int i = 0; i < loadMessageCount; i++) {
+				javax.mail.Message message = folder.getMessage(messageCount-i);
 				messageDate = message.getSentDate().getTime();
 				if (currentMessageTimes.contains(messageDate)) {
 					//Update flags
@@ -99,7 +107,7 @@ public class FolderMapper {
 					messageMap.remove(messageDate);
 				} else {
 					currentFolder.addMessage(MessageMapper.map(message));
-				}				
+				}	
 			}
 			
 			for (Message message : messageMap.values()) {

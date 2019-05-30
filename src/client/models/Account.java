@@ -2,14 +2,14 @@ package client.models;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Account {
-	
+public class Account implements Serializable {
+
 	// Property names
 	public static final String DETAILS = "details";
-	public static final String ROOT_FOLDER = "rootFolder";
 	public static final String SYNC_RATE = "syncRate";
 	
 	// Properties
@@ -19,12 +19,15 @@ public class Account {
 	private String password;
 	private String smtpAddress;
 	private String imapAddress;
-	private Folder rootFolder = new Folder("root");
+	private Folder rootFolder;
 	private int syncRate;
+	private transient boolean isSetup;
 	
 	// Property listeners
-	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
+	private transient List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
 
+	private static final long serialVersionUID = 8009287544356881799L;
+	
 	public Account(String displayName, String address, String username, String password, String smtpAddress,
 			String imapAddress, int syncRate) {
 		// Set property values
@@ -35,6 +38,14 @@ public class Account {
 		this.smtpAddress = smtpAddress;
 		this.imapAddress = imapAddress;
 		this.syncRate = syncRate;
+		rootFolder = new Folder("root "+displayName);
+	}
+	
+	public void checkListeners() {
+		if (!isSetup) {
+			listeners = new ArrayList<PropertyChangeListener>();
+			isSetup = true;
+		}
 	}
 	
 	/*
@@ -51,6 +62,15 @@ public class Account {
 		notifyChangeListeners(DETAILS);
 	}
 	
+	// Address
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	// Username
 	public String getUsername() {
 		return username;
@@ -96,11 +116,6 @@ public class Account {
 		return rootFolder;
 	}
 	
-	public void setRootFolder(Folder rootFolder) {
-		this.rootFolder = rootFolder;
-		notifyChangeListeners(ROOT_FOLDER);
-	}
-	
 	// Sync rate
 	public int getSyncRate() {
 		return syncRate;
@@ -120,16 +135,19 @@ public class Account {
 	}
 	
 	private void notifyChangeListeners(String propertyName, Object oldValue, Object newValue) {
+		checkListeners();
 		for (PropertyChangeListener listener : listeners) {
 			listener.propertyChange(new PropertyChangeEvent(this, propertyName, oldValue, newValue));
 		}
 	}
 	
 	public void addChangeListener(PropertyChangeListener listener) {
+		checkListeners();
 		listeners.add(listener);
 	}
 	
 	public void removeChangeListener(PropertyChangeListener listener) {
+		checkListeners();
 		listeners.remove(listener);
 	}
 	

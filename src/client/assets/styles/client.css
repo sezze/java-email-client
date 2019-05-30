@@ -10,3 +10,31 @@
 .message-list-item:pressed {
 	-fx-background-color: derive(-fx-base, -20%);
 }
+
+.message-list-item .message-flags {
+	-fx-alignment: center-right;
+}
+
+.message-list-item:unread {
+	-fx-background-color: -fx-accent, -fx-base;
+	-fx-background-insets: 0, 0 0 0 8;
+	-fx-padding: 4 8 4 16;
+}
+
+.message-list-item:unread:hover {
+	-fx-background-color: -fx-accent, derive(-fx-base, -10%);
+}
+
+.message-list-item:unread:pressed {
+	-fx-background-color: -fx-accent, derive(-fx-base, -20%);
+}
+
+.message-view > * {
+	-fx-background-color: -fx-text-box-border, -fx-base;
+	-fx-background-insets: 0, 2;
+}
+
+
+
+
+

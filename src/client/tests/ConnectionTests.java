@@ -31,7 +31,6 @@ class ConnectionTests {
 		for (javax.mail.Folder folder : con.getStore().getDefaultFolder().list()) {
 			rootFolder.addFolder(FolderMapper.map(folder));
 		}
-		account.setRootFolder(rootFolder);
 		assertTrue(account.getRootFolder().getFolders().size() > 0);
 	}
 

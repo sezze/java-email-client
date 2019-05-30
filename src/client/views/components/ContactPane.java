@@ -12,7 +12,9 @@ public class ContactPane extends HBox {
 	private Label nameLabel;
 	private Label addressLabel;
 	
-	public ContactPane(Contact contact) {
+	public ContactPane(Contact contact, boolean nameOnly) {
+		getStyleClass().add("contact-pane");
+		
 		this.contact = contact;
 		
 		setSpacing(5); // Space between name and address
@@ -20,7 +22,11 @@ public class ContactPane extends HBox {
 		if (contact.getName() == null) {
 			// If only address, no display name
 			addressLabel = new Label(contact.getAddress());
-			getChildren().addAll(addressLabel);
+			getChildren().add(addressLabel);
+		} else if (nameOnly) {
+			// If only name is to be shown
+			nameLabel = new Label(contact.getName());
+			getChildren().add(nameLabel);
 		} else {
 			// If address and display name
 			nameLabel = new Label(contact.getName());

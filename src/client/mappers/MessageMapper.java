@@ -160,11 +160,22 @@ public class MessageMapper {
 	
 	private static void handleContent(Part part, Builder builder) throws MessagingException, IOException {
 		if (part.isMimeType("text/*")) {
-			if (!builder.hasHTMLBody()) {
-				String body = part.getContent().toString();
+			String body;
+			if (builder.hasBody()) {
+				if (!builder.hasHTMLBody()) {
+					if (part.isMimeType("text/html")) {
+						body = MimeUtility.decodeText(part.getContent().toString());
+					} else {
+						body = builder.getBody() + "\n" + MimeUtility.decodeText(part.getContent().toString());
+					}
+				} else {
+					return;
+				}
+			} else {
 				body = MimeUtility.decodeText(part.getContent().toString());
-				builder.body(body, part.isMimeType("text/html"));
 			}
+
+			builder.body(body, part.isMimeType("text/html"));
 		} else {
 			builder.addAttachment(new Attachment(part.getFileName(), part.getSize()));
 		}
