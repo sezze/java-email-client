@@ -55,13 +55,15 @@ public class CacheController {
 	public static List<Account> loadAllAccounts() {
 		File folder = new File("cache/accounts");
 		List<Account> accounts = new ArrayList<Account>();
-		for (File file : folder.listFiles()) {
-			try {
-				accounts.add((Account) loadObject(file));
-			} catch (ClassNotFoundException | IOException e) {
-				Main.LOGGER.log(Level.WARNING, "Failed to load in account " + file.getName(), e);
+		File[] files = folder.listFiles();
+		if (files != null)
+			for (File file : folder.listFiles()) {
+				try {
+					accounts.add((Account) loadObject(file));
+				} catch (ClassNotFoundException | IOException e) {
+					Main.LOGGER.log(Level.WARNING, "Failed to load in account " + file.getName(), e);
+				}
 			}
-		}
 		return accounts;
 	}
 
