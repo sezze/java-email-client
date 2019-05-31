@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -35,6 +36,8 @@ public class MessageListItemPane extends VBox {
 	
 	private PropertyChangeListener messageListener;
 
+	private ContextMenu contextMenu;
+
 	public static final SimpleDateFormat FORMAT = new SimpleDateFormat("HH:mm dd.MM.yyyy");
 
 	public MessageListItemPane(Message message) {
@@ -48,7 +51,7 @@ public class MessageListItemPane extends VBox {
 		// Style class
 		getStyleClass().add("message-list-item");
 
-		
+			
 		/*
 		 * Upper row
 		 */
@@ -103,6 +106,21 @@ public class MessageListItemPane extends VBox {
 
 		getChildren().addAll(upperRow, subjectLabel, lowerRow);
 
+		
+//		/*
+//		 * Flag test
+//		 */
+//		
+//		MenuItem flagItem = new MenuItem("Toggle flag");
+//		flagItem.setOnAction(e -> {
+//			message.setFlagged(!message.isFlagged());
+//		});
+//		
+//		contextMenu = new ContextMenu();
+//		contextMenu.getItems().add(flagItem);
+//		
+//		subjectLabel.setContextMenu(contextMenu);
+		
 		
 		/*
 		 * Event listener

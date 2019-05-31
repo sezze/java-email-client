@@ -28,7 +28,7 @@ class CacheTests {
 				.addRecipients(Arrays.asList(new Contact(a)))
 				.body("Test message", false)
 				.build();
-		f.addMessage(m);
+		f.addMessage(m, false);
 		CacheController.cacheAccount(a);
 		Account b = CacheController.loadAccount(a.getAddress());
 		assertTrue(a.getDisplayName().equals(b.getDisplayName()));

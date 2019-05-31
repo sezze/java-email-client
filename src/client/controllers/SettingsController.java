@@ -171,8 +171,10 @@ public class SettingsController implements Initializable {
 	public void setEditingAccount(boolean isEditingAccount) {
 		if (isEditingAccount) {
 			createAccountLabel.setText("Edit account");
+			createButton.setText("Update");
 		} else {
 			createAccountLabel.setText("Create account");
+			createButton.setText("Create");
 		}
 		this._isEditingAccount = isEditingAccount;
 	}
