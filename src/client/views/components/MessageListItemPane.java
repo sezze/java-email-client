@@ -121,6 +121,9 @@ public class MessageListItemPane extends VBox {
 	            } else {
 	            	// Open message
 	            	Main.CLIENT.setActiveMessage(message);
+	            	if (!message.isSeen()) {
+						message.setSeen(true);
+					}
 	            }
 	        }
 		});

@@ -105,6 +105,7 @@ public class FolderMapper {
 						m.setDraft(f.contains(Flag.DRAFT));
 						m.setFlagged(f.contains(Flag.FLAGGED));
 						m.setSeen(f.contains(Flag.SEEN));
+						MessageMapper.messageCache.put(m, message);
 					}
 					messageMap.remove(messageDate);
 				} else {
@@ -114,6 +115,7 @@ public class FolderMapper {
 			
 			for (Message message : messageMap.values()) {
 				currentFolder.removeMessage(message);
+				MessageMapper.messageCache.remove(message);
 			}
 		}
 		

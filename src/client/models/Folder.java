@@ -31,7 +31,6 @@ public class Folder implements Serializable {
 		this.name = name;
 		this.subFolders = new ArrayList<Folder>();
 		this.messages = new ArrayList<Message>();
-		
 	}
 
 	public void checkListeners() {
@@ -40,6 +39,12 @@ public class Folder implements Serializable {
 			childListener = e -> {
 				notifyChangeListeners(e.getSource(), e.getPropertyName());
 			};
+			for (Message message : messages) {
+				message.addChangeListener(childListener);
+			}
+			for (Folder folder : subFolders) {
+				folder.addChangeListener(childListener);
+			}
 			isSetup = true;
 		}
 	}

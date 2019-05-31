@@ -131,8 +131,10 @@ public class Message implements Serializable {
 	}
 	
 	public void setAnswered(boolean isAnswered) {
-		this.isAnswered = isAnswered;
-		notifyChangeListeners();
+		if (isAnswered != this.isAnswered) {
+			this.isAnswered = isAnswered;
+			notifyChangeListeners();
+		}
 	}
 
 	// Is deleted
@@ -141,8 +143,10 @@ public class Message implements Serializable {
 	}
 
 	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-		notifyChangeListeners();
+		if (isDeleted != this.isDeleted) {
+			this.isDeleted = isDeleted;
+			notifyChangeListeners();
+		}
 	}
 
 	// Is flagged
@@ -151,8 +155,10 @@ public class Message implements Serializable {
 	}
 
 	public void setFlagged(boolean isFlagged) {
-		this.isFlagged = isFlagged;
-		notifyChangeListeners();
+		if (isFlagged != this.isFlagged) {
+			this.isFlagged = isFlagged;
+			notifyChangeListeners();
+		}
 	}
 
 	// Is draft
@@ -161,8 +167,10 @@ public class Message implements Serializable {
 	}
 
 	public void setDraft(boolean isDraft) {
-		this.isDraft = isDraft;
-		notifyChangeListeners();
+		if (isDraft != this.isDraft) {
+			this.isDraft = isDraft;
+			notifyChangeListeners();
+		}
 	}
 
 	// Is seen
@@ -171,8 +179,10 @@ public class Message implements Serializable {
 	}
 
 	public void setSeen(boolean isSeen) {
-		this.isSeen = isSeen;
-		notifyChangeListeners();
+		if (isSeen != this.isSeen) {
+			this.isSeen = isSeen;
+			notifyChangeListeners();
+		}
 	}
 
 	// Is HTML (body)

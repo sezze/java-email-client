@@ -7,13 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import javax.mail.Flags.Flag;
 import javax.mail.FolderClosedException;
 import javax.mail.MessagingException;
 
 import client.Main;
 import client.mappers.FolderMapper;
+import client.mappers.MessageMapper;
 import client.models.Account;
 import client.models.Folder;
+import client.models.Message;
 
 public class SyncController{
 	
@@ -40,14 +43,33 @@ public class SyncController{
 		this.account = account;
 		this.con = con;
 		
-//		folderListener = new PropertyChangeListener() {
-//			@Override
-//			public void propertyChange(PropertyChangeEvent evt) {
-//				Main.LOGGER.log(Level.WARNING, "Syncing not implemented!");
-//			}
-//		};
+		folderListener = e -> {
+			if (!isSyncing && e.getPropertyName() == Folder.MESSAGES) {
+				Message message = (Message) e.getSource();
+				javax.mail.Message msg = MessageMapper.messageCache.get(message);
+				if (msg == null) {
+					return;
+				}
+				try {
+					msg.getFolder().open(javax.mail.Folder.READ_WRITE);
+					msg.setFlag(Flag.SEEN, message.isSeen());
+					msg.setFlag(Flag.ANSWERED, message.isAnswered());
+					msg.setFlag(Flag.DRAFT, message.isDraft());
+					msg.setFlag(Flag.FLAGGED, message.isFlagged());
+					msg.setFlag(Flag.DELETED, message.isDeleted());
+				} catch (MessagingException e1) {
+					Main.LOGGER.log(Level.WARNING, "Could not update message.", e1);
+				} finally {
+					try {
+						msg.getFolder().close();
+					} catch (MessagingException e1) {
+						Main.LOGGER.log(Level.WARNING, "Could not close folder.", e1);
+					}
+				}
+			}
+		};
 		
-//		account.getRootFolder().addChangeListener(folderListener);
+		account.getRootFolder().addChangeListener(folderListener);
 		
 		syncTimerThread = new Thread() {
 			public void run() {

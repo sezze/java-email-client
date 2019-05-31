@@ -1,7 +1,9 @@
 package client.mappers;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.Address;
 import javax.mail.BodyPart;
@@ -24,6 +26,8 @@ import client.models.Message.Builder;
 
 public class MessageMapper {
 
+	public static Map<Message,javax.mail.Message> messageCache = new HashMap<Message, javax.mail.Message>();
+	
 	/**
 	 * Client Message -> Java Mail Message
 	 * @param session 
@@ -123,7 +127,9 @@ public class MessageMapper {
 		builder.isSeen(flags.contains(Flag.SEEN));
 		
 		// Build and return
-		return builder.build();
+		Message m = builder.build();
+		messageCache.put(m, serverMsg);
+		return m;
 	}
 
 	private static void findContent(javax.mail.Message message, Builder builder) throws MessagingException, IOException {		
