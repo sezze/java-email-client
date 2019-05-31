@@ -189,8 +189,10 @@ public class Message implements Serializable {
 	 */
 	private void notifyChangeListeners() {
 		checkListeners();
-		for (PropertyChangeListener listener : listeners) {
-			listener.propertyChange(new PropertyChangeEvent(this, Folder.MESSAGES, null, null));
+		synchronized (listeners) {
+			for (PropertyChangeListener listener : listeners) {
+				listener.propertyChange(new PropertyChangeEvent(this, Folder.MESSAGES, null, null));
+			}
 		}
 	}
 	

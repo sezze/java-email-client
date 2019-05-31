@@ -59,9 +59,13 @@ public class Folder implements Serializable {
 	}
 
 	// Messages
-	public void addMessage(Message message) {
+	public void addMessage(Message message, boolean first) {
 		checkListeners();
-		messages.add(message);
+		if (first) {
+			messages.add(0, message);
+		} else {
+			messages.add(message);
+		}
 		message.addChangeListener(childListener);
 		notifyChangeListeners(this, MESSAGES);
 	}

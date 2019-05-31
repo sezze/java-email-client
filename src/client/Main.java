@@ -14,6 +14,7 @@ import client.controllers.SyncController;
 import client.models.Account;
 import client.models.Client;
 import client.views.components.ClientMenuBar;
+import client.views.components.SyncingNotifier;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -92,9 +93,12 @@ public class Main extends Application {
 			System.exit(1);
 		}
 		VBox.setVgrow(page, Priority.ALWAYS);
-
+		
+		// Syncing notifier
+		SyncingNotifier syncingNotifier = new SyncingNotifier();
+		
 		// Add children to root
-		root.getChildren().addAll(menuBar, page);
+		root.getChildren().addAll(menuBar, page, syncingNotifier);
 
 		
 		/*

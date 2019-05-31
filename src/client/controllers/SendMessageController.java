@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 public class SendMessageController implements Initializable{
 
@@ -37,6 +38,8 @@ public class SendMessageController implements Initializable{
 	private TextArea bodyTextArea;
 
 	private ConnectionController con;
+
+	private Stage stage;
 	
 	
 	@Override
@@ -100,6 +103,7 @@ public class SendMessageController implements Initializable{
 		
 		try {
 			con.sendMessage(message);
+			stage.close();
 		} catch (MessagingException e) {
 			Main.LOGGER.log(Level.WARNING, "Failed to send", e);
 			DialogUtil.showWarning("Failed to send message.");
@@ -128,6 +132,10 @@ public class SendMessageController implements Initializable{
 
 	public void setConnectionController(ConnectionController con) {
 		this.con = con;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 	
 }

@@ -140,7 +140,6 @@ public class SettingsController implements Initializable {
 			return;
 		}
 		Main.CLIENT.removeAccount(account);
-		CacheController.removeAccount(account);
 	}
 	
 	@FXML

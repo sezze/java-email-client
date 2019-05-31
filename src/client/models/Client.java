@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import client.Main;
+import client.controllers.CacheController;
 import client.controllers.ConnectionController;
 import client.controllers.SendMessageController;
 import client.controllers.SyncController;
@@ -27,6 +28,7 @@ public class Client implements Serializable {
 	public static final String ACTIVE_FOLDER = "activeFolder";
 	public static final String ACTIVE_ACCOUNT = "activeAccount";
 	public static final String ACTIVE_MESSAGE = "activeMessage";
+	public static final String SYNC = "sync";
 
 	// Properties
 	private List<Account> accounts = new ArrayList<Account>();
@@ -39,6 +41,7 @@ public class Client implements Serializable {
 
 	// Property listeners
 	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
+	private PropertyChangeListener syncListener = e -> notifyChangeListeners(SYNC);
 	
 	// Serialization ID
 	private static final long serialVersionUID = 7198673490993617265L;
@@ -75,6 +78,8 @@ public class Client implements Serializable {
 				sendMessageController.setConnectionController(ctrl);
 			}
 		}
+		
+		sendMessageController.setStage(stage);
 		
 		return sendMessageController;
 	}
@@ -156,6 +161,8 @@ public class Client implements Serializable {
 				break;
 			}
 		}
+		
+		CacheController.removeAccount(account);
 				
 		notifyChangeListeners(ACCOUNTS);
 	}
@@ -186,7 +193,9 @@ public class Client implements Serializable {
 	
 	// Sync Controller
 	public void addSyncController(Account account, ConnectionController con) {
-		syncControllers.add(new SyncController(account, con));
+		SyncController ctrl = new SyncController(account, con);
+		ctrl.addChangeListener(syncListener);
+		syncControllers.add(ctrl);
 	}
 	
 	public List<SyncController> getSyncControllers() {
@@ -197,6 +206,7 @@ public class Client implements Serializable {
 		for (SyncController syncController : syncControllers) {
 			if (syncController.getAccount() == account) {
 				syncController.stop();
+				syncController.removeChangeListener(syncListener);
 				syncControllers.remove(syncController);
 			}
 		}

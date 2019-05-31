@@ -22,6 +22,8 @@ public class SyncController{
 	 * Download new messages✔️ ,download folder and message changes✔ ,message flags ✔️ ,(local folder changes), (send messages)
 	 */
 	
+	private static int totalConcurrentSyncing = 0;
+	
 	// Properties
 	private Account account;
 	private ConnectionController con;
@@ -68,6 +70,7 @@ public class SyncController{
 			return;
 		}
 		setSyncing(true);
+
 		// Check if connected
 		if (!con.isConnected()) {
 			try {
@@ -91,13 +94,16 @@ public class SyncController{
 		} catch (MessagingException | IOException e) {
 			Main.LOGGER.log(Level.WARNING, "Couldn't get server messages", e);
 		} 
-		
+
 		setSyncing(false);
 		
 	}
 	
 	// Stop thread and listeners
 	public void stop() {
+		if (isSyncing) {
+			setSyncing(false);
+		}
 		stopping = true;
 		syncTimerThread.interrupt();
 		account.getRootFolder().removeChangeListener(folderListener);
@@ -128,6 +134,7 @@ public class SyncController{
 	}
 
 	private void setSyncing(boolean isSyncing) {
+		totalConcurrentSyncing += isSyncing ? 1 : -1;
 		this.isSyncing = isSyncing;
 		notifyChangeListeners(isSyncing);
 	}
@@ -137,6 +144,9 @@ public class SyncController{
 		return con;
 	}
 
+	public static int getTotalConcurrentSyncing() {
+		return totalConcurrentSyncing;
+	}
 
 	/*
 	 * Property listeners
