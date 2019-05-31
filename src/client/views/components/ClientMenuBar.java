@@ -12,7 +12,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.stage.Stage;
 
 public class ClientMenuBar extends MenuBar {
-	public ClientMenuBar(Stage stage, Scene scene, Main main) {
+	public ClientMenuBar(Stage stage, Scene scene) {
 
 		/*
 		 * File menu
@@ -21,7 +21,7 @@ public class ClientMenuBar extends MenuBar {
 		
 		// Open settings
 		MenuItem settings = new MenuItem("Settings");
-		settings.setOnAction(e -> main.openSettings());
+		settings.setOnAction(e -> Main.CLIENT.openSettings());
 
 		// Quit (ALT + F4)
 		MenuItem quit = new MenuItem("Quit");

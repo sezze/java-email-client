@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import javax.mail.FolderClosedException;
 import javax.mail.MessagingException;
 
 import client.Main;
@@ -85,9 +86,11 @@ public class SyncController{
 		
 		try {
 			FolderMapper.mapToExisting(con.getStore().getDefaultFolder(), currentFolder, true);
+		} catch (FolderClosedException | IllegalStateException e) {
+			Main.LOGGER.log(Level.FINE , "Error with closed folder (Probably deleted account)", e);
 		} catch (MessagingException | IOException e) {
 			Main.LOGGER.log(Level.WARNING, "Couldn't get server messages", e);
-		}
+		} 
 		
 		setSyncing(false);
 		

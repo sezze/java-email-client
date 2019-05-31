@@ -16,7 +16,6 @@ import client.models.Client;
 import client.views.components.ClientMenuBar;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuBar;
 import javafx.scene.image.Image;
@@ -29,10 +28,9 @@ public class Main extends Application {
 	public static final Client CLIENT = new Client();
 	public static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	public static final int MAX_MESSAGE_COUNT = 50;
-	
+		
 	public static final String[] STYLESHEETS = { "client/assets/styles/theme.css", "client/assets/styles/client.css" };
 
-	private boolean settingsOpen = false;
 	
 	public static void main(String[] args) {
 
@@ -45,7 +43,8 @@ public class Main extends Application {
 		LOGGER.setLevel(Level.ALL); // Process all log entries
 
 		ConsoleHandler ch = new ConsoleHandler();
-		ch.setLevel(Level.INFO); // Show all log entries in console
+		//ch.setLevel(Level.SEVERE); // Show only severe log entries in console
+		ch.setLevel(Level.INFO); // Show info (and above) log entries in console
 		LOGGER.addHandler(ch);
 
 		// File logger
@@ -82,7 +81,7 @@ public class Main extends Application {
 		scene.getStylesheets().addAll(STYLESHEETS);
 
 		// Menu bar
-		MenuBar menuBar = new ClientMenuBar(primaryStage, scene, this);
+		MenuBar menuBar = new ClientMenuBar(primaryStage, scene);
 
 		// Load page
 		VBox page = null;
@@ -113,40 +112,6 @@ public class Main extends Application {
 			onExit(primaryStage);
 		});
 		
-	}
-	
-	public void openSettings() {
-		if (settingsOpen) return;
-		
-		
-		/*
-		 * Scene setup
-		 */
-
-		// Root node
-		Parent root;
-		try {
-			root = FXMLLoader.load(getClass().getResource("views/Settings.fxml"));
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "Error initializing Settings.fxml", e);
-			return;
-		}
-
-		// Scene
-		Scene scene = new Scene(root, 460, 560);
-		scene.getStylesheets().addAll(STYLESHEETS);
-		
-		/*
-		 * Stage setup
-		 */
-		Stage stage = new Stage();
-		stage.setTitle("Java Email Client - Settings");
-		stage.setScene(scene);
-		stage.getIcons().add(new Image("client/assets/icons/logo.png"));
-		stage.setOnHiding(e -> settingsOpen = false);
-		stage.show();
-		
-		settingsOpen = true;
 	}
 	
 	public void onExit(Stage primaryStage) {

@@ -38,10 +38,14 @@ public class FolderTree extends TreeView<Folder> {
 	}
 
 	private void updateTree() {
-		TreeItem<Folder> rootItem = new TreeItem<Folder>(folder);
-		setShowRoot(false);
-		updateTree(rootItem, folder);
-		setRoot(rootItem);
+		if (folder != null) {
+			TreeItem<Folder> rootItem = new TreeItem<Folder>(folder);
+			setShowRoot(false);
+			updateTree(rootItem, folder);
+			setRoot(rootItem);
+		} else {
+			setRoot(null);
+		}
 	}
 	
 	private void updateTree(TreeItem<Folder> parent, Folder parentFolder) {
@@ -61,7 +65,7 @@ public class FolderTree extends TreeView<Folder> {
 	public void setFolder(Folder folder) {
 		if (this.folder != null) {
 			// If currently listening to a previous folder
-			folder.removeChangeListener(folderListener);
+			this.folder.removeChangeListener(folderListener);
 		}
 		
 		// Set folder and update tree
@@ -69,7 +73,9 @@ public class FolderTree extends TreeView<Folder> {
 		updateTree();
 		
 		// Listen for folder changes
-		folder.addChangeListener(folderListener);
+		if (folder != null) {
+			folder.addChangeListener(folderListener);			
+		}
 	}
 	
 }

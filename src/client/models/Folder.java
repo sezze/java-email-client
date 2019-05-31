@@ -66,28 +66,10 @@ public class Folder implements Serializable {
 		notifyChangeListeners(this, MESSAGES);
 	}
 	
-	public void addMessages(Collection<Message> messages) {
-		checkListeners();
-		this.messages.addAll(messages);
-		for (Message message : messages) {
-			message.addChangeListener(childListener);
-		}
-		notifyChangeListeners(this, MESSAGES);
-	}
-	
 	public void removeMessage(Message message) {
 		checkListeners();
 		messages.remove(message);
 		message.removeChangeListener(childListener);
-		notifyChangeListeners(this, MESSAGES);
-	}
-	
-	public void removeMessages(Collection<Message> messages) {
-		checkListeners();
-		this.messages.removeAll(messages);
-		for (Message message : messages) {
-			message.removeChangeListener(childListener);
-		}
 		notifyChangeListeners(this, MESSAGES);
 	}
 	

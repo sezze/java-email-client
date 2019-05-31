@@ -96,18 +96,28 @@
 	-fx-background-color: derive(-fx-base, -10%);
 	-fx-effect: innershadow( two-pass-box , rgba(0,0,0,0.3) , 4, 0.0 , 0 , 1 );
 }
-
+.button.button-primary{
+	-fx-background-color: -fx-accent;
+	-fx-text-fill: white;
+}
+.button.button-primary:pressed{
+	-fx-background-color: derive(-fx-accent, -10%);
+}
 /* Text field */
 .text-field {
 	-fx-background-color: -fx-text-box-border, -fx-base;
 	-fx-background-insets: 0, 1;
 	-fx-background-radius: 0;
-	-fx-padding: 8px;
+	-fx-padding: 4px;
+	-fx-margin: 0;
 }
 .text-field:focused {
 	-fx-background-color: -fx-focus-color, -fx-base;
 	-fx-background-insets: 0, 1;
 	-fx-effect: dropshadow( two-pass-box , rgba(0,0,0,0.2) , 2, 0 , 0 , 2 );
+}
+.text-field.text-field-large {
+	-fx-padding: 8px;
 }
 
 /* Menu bar */

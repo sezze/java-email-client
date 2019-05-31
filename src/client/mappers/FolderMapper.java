@@ -31,7 +31,7 @@ public class FolderMapper {
 		
 		int messageCount = folder.getMessageCount();
 		int loadMessageCount = Math.min(messageCount, Main.MAX_MESSAGE_COUNT);
-		for (int i = 1; i <= loadMessageCount; i++) {
+		for (int i = 0; i < loadMessageCount; i++) {
 			javax.mail.Message message = folder.getMessage(messageCount-i);
 			fldr.addMessage(MessageMapper.map(message));
 		}

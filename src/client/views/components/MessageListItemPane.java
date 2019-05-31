@@ -1,7 +1,9 @@
 package client.views.components;
 
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
 
 import client.Main;
 import client.models.Message;
@@ -10,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -39,6 +42,7 @@ public class MessageListItemPane extends VBox {
 			// Set flags
 			Platform.runLater(() -> setFlags());
 		};
+		
 		
 		// Style class
 		getStyleClass().add("message-list-item");
@@ -102,7 +106,19 @@ public class MessageListItemPane extends VBox {
 		message.addChangeListener(messageListener);
 		
 		setOnMouseClicked(e -> {
-			Main.CLIENT.setActiveMessage(message);
+	        if(e.getButton().equals(MouseButton.PRIMARY)){
+	            if(e.getClickCount() == 2){
+	            	// Reply to message
+	                try {
+						Main.CLIENT.openSendMessageStage(message);
+					} catch (IOException e1) {
+						Main.LOGGER.log(Level.SEVERE, "Could not open send message dialog", e1);
+					}
+	            } else {
+	            	// Open message
+	            	Main.CLIENT.setActiveMessage(message);
+	            }
+	        }
 		});
 	}
 

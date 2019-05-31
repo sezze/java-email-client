@@ -1,12 +1,8 @@
 package client.mappers;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.Address;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
@@ -30,9 +26,10 @@ public class MessageMapper {
 
 	/**
 	 * Client Message -> Java Mail Message
+	 * @param session 
 	 */
-	public static javax.mail.Message map(Message clientMsg) throws MessagingException {
-		javax.mail.Message msg = new MimeMessage(Session.getInstance(System.getProperties()));
+	public static javax.mail.Message map(Message clientMsg, Session session) throws MessagingException {
+		javax.mail.Message msg = new MimeMessage(session);
 		
 		/*
 		 * Required fields
@@ -74,16 +71,6 @@ public class MessageMapper {
 
 		Multipart multipart = new MimeMultipart();
 		multipart.addBodyPart(content);
-
-		// Attachments
-		for (Attachment clientAttachment : clientMsg.getAttachments()) {
-			File file = clientAttachment.getFile();
-			MimeBodyPart attachment = new MimeBodyPart();
-			DataSource source = new FileDataSource(file);
-			attachment.setDataHandler(new DataHandler(source));
-			attachment.setFileName(file.getName());
-			multipart.addBodyPart(attachment);
-		}
 
 		msg.setContent(multipart);
 		return msg;

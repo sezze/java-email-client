@@ -1,8 +1,10 @@
 package client.controllers;
 
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 import client.Main;
 import client.models.Account;
@@ -124,6 +126,20 @@ public class ClientController implements Initializable {
 		// Set active account to account combo box value
 		Main.CLIENT.setActiveAccount(accountsComboBox.getValue());
 	}
+	
+	@FXML
+	private void openSendMessageStage() {
+		try {
+			Main.CLIENT.openSendMessageStage();
+		} catch (IOException e) {
+			Main.LOGGER.log(Level.WARNING, "Could not open send dialog", e);
+		}
+	}
+	
+	@FXML
+	private void openSettingsStage() {
+		Main.CLIENT.openSettings();
+	} 
 
 	private void updateAccountsComboBox() {
 		// Set items to available accounts

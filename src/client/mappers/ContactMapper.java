@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import javax.mail.Address;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 import client.Main;
@@ -57,6 +58,13 @@ public class ContactMapper {
 			addresses = new InternetAddress[] {};
 		}
 		return ContactMapper.map(Arrays.asList(addresses)); 
+	}
+	
+	/**
+	 * String to Contact 
+	 */
+	public static Contact map(String str) throws AddressException {
+		return map(new InternetAddress(str.trim()));
 	}
 	
 }

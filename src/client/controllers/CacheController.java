@@ -67,4 +67,11 @@ public class CacheController {
 		return accounts;
 	}
 
+	public static void removeAccount(Account account) {
+		File file = new File("cache/accounts/"+account.getAddress()+".oos");
+		if (!file.delete()) {
+			Main.LOGGER.log(Level.WARNING, "Failed to remove account cache for " + account.getAddress());
+		}
+	}
+	
 }

@@ -25,6 +25,7 @@ public class Contact implements Serializable {
 		this(account.getDisplayName(), account.getAddress());
 	}
 
+	
 	/*
 	 * Property getters and setters
 	 */
@@ -34,6 +35,15 @@ public class Contact implements Serializable {
 
 	public String getAddress() {
 		return address;
+	}
+	
+	@Override
+	public String toString() {
+		if (getName() == null) {
+			return getAddress();
+		} else {
+			return getName()+" <"+ getAddress() +">";
+		}
 	}
 
 }

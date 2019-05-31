@@ -2,13 +2,23 @@ package client.models;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
+import client.Main;
 import client.controllers.ConnectionController;
+import client.controllers.SendMessageController;
 import client.controllers.SyncController;
+import client.util.DialogUtil;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class Client implements Serializable {
 
@@ -25,6 +35,7 @@ public class Client implements Serializable {
 	private Account activeAccount;
 	private Folder activeFolder;
 	private Message activeMessage;
+	private transient Stage settingsStage;
 
 	// Property listeners
 	private List<PropertyChangeListener> listeners = new ArrayList<PropertyChangeListener>();
@@ -33,7 +44,82 @@ public class Client implements Serializable {
 	private static final long serialVersionUID = 7198673490993617265L;
 
 	public Client() {}
+	
+	public SendMessageController openSendMessageStage() throws IOException {
+		if (getActiveAccount() == null) { DialogUtil.showWarning("You have no configured accounts, go to settings"); return null; }
+		
+		
+		/*
+		 * Scene setup 
+		 */
+		FXMLLoader loader = new FXMLLoader();
+		Parent root = loader.load(getClass().getResource("../views/SendMessage.fxml").openStream());
+		SendMessageController sendMessageController = (SendMessageController) loader.getController();
+		
+		// Scene
+		Scene scene = new Scene(root, 460, 560);
+		scene.getStylesheets().addAll(Main.STYLESHEETS);
+		
+		/*
+		 * Stage setup
+		 */
+		Stage stage = new Stage();
+		stage.setTitle("Java Email Client - New Message");
+		stage.setScene(scene);
+		stage.getIcons().add(new Image("client/assets/icons/logo.png"));
+		stage.show();
+		
+		// Set connection controller
+		for (ConnectionController ctrl : connectionControllers) {
+			if (ctrl.getAccount() == getActiveAccount()) {
+				sendMessageController.setConnectionController(ctrl);
+			}
+		}
+		
+		return sendMessageController;
+	}
 
+	public void openSendMessageStage(Message message) throws IOException {
+		SendMessageController ctrl = openSendMessageStage();
+		if (ctrl != null) {
+			ctrl.loadMessage(message);
+		}
+	}
+	
+	public void openSettings() {
+		if (settingsStage != null)
+			if (settingsStage.isShowing()) {
+				settingsStage.toFront();
+				return;
+			}
+		
+		
+		/*
+		 * Scene setup
+		 */
+
+		// Root node
+		Parent root;
+		try {
+			root = FXMLLoader.load(getClass().getResource("../views/Settings.fxml"));
+		} catch (IOException e) {
+			Main.LOGGER.log(Level.SEVERE, "Error initializing Settings.fxml", e);
+			return;
+		}
+
+		// Scene
+		Scene scene = new Scene(root, 460, 560);
+		scene.getStylesheets().addAll(Main.STYLESHEETS);
+		
+		/*
+		 * Stage setup
+		 */
+		settingsStage = new Stage();
+		settingsStage.setTitle("Java Email Client - Settings");
+		settingsStage.setScene(scene);
+		settingsStage.getIcons().add(new Image("client/assets/icons/logo.png"));
+		settingsStage.show();
+	}
 	
 	/*
 	 * Property getters and setters
@@ -55,8 +141,10 @@ public class Client implements Serializable {
 		if (activeAccount == account) {
 			if (accounts.size() > 0)
 				setActiveAccount(accounts.get(0));
-			else
+			else {
 				setActiveAccount(null);
+			}
+				
 		}
 		
 		for (SyncController ctrl : syncControllers) {
@@ -65,11 +153,10 @@ public class Client implements Serializable {
 				syncControllers.remove(ctrl);
 				ctrl.getConnectionController().stop();
 				connectionControllers.remove(ctrl.getConnectionController());
+				break;
 			}
 		}
-		
-		
-		
+				
 		notifyChangeListeners(ACCOUNTS);
 	}
 
