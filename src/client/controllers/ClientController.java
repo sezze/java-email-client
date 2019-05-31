@@ -39,7 +39,7 @@ public class ClientController implements Initializable {
 	private VBox folderTreeContainer;
 
 	@FXML
-	private ScrollPane messageViewContainer;
+	private VBox messageViewContainer;
 	
 	@FXML
 	private TextField searchField;
@@ -176,7 +176,8 @@ public class ClientController implements Initializable {
 	}
 	
 	private void updateMessageView() {
-		messageViewContainer.setContent(new MessageView(Main.CLIENT.getActiveMessage()));
+		messageViewContainer.getChildren().clear();
+		messageViewContainer.getChildren().add(new MessageView(Main.CLIENT.getActiveMessage()));
 	}
 
 }

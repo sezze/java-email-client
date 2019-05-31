@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class MessageListItemPane extends VBox {
@@ -56,10 +57,12 @@ public class MessageListItemPane extends VBox {
 
 		// Sender pane
 		senderPane = new ContactPane(message.getSender(), true);
+		senderPane.getStyleClass().add("message-sender");
 
 		// Flags
 		flagRow = new HBox();
 		flagRow.getStyleClass().add("message-flags");
+		HBox.setHgrow(flagRow, Priority.ALWAYS);
 		setFlags();
 
 		upperRow.getChildren().addAll(senderPane, flagRow);
@@ -84,13 +87,14 @@ public class MessageListItemPane extends VBox {
 			attachmentRow = new HBox();
 			attachmentRow.getStyleClass().add("message-attachment-row");
 			attachmentLabel = new Label(Integer.toString(message.getAttachments().size()));
-			Icon attachmentIcon = new Icon("clip", 24);
+			Icon attachmentIcon = new Icon("clip", 18);
 			attachmentRow.getChildren().addAll(attachmentIcon, attachmentLabel);
 			lowerRow.getChildren().add(attachmentRow);
 		}
 
 		// Date row
 		dateRow = new HBox();
+		HBox.setHgrow(dateRow, Priority.ALWAYS);
 		dateRow.getStyleClass().add("message-date-row");
 		dateLabel = new Label(FORMAT.format(message.getDate()));
 		dateRow.getChildren().addAll(dateLabel);
@@ -126,11 +130,11 @@ public class MessageListItemPane extends VBox {
 		ObservableList<Node> f = flagRow.getChildren();
 		f.clear();
 		if (message.isAnswered())
-			f.add(new Icon("reply", 24));
+			f.add(new Icon("reply", 18));
 		if (message.isFlagged())
-			f.add(new Icon("flag", 24));
+			f.add(new Icon("flag", 18));
 		if (message.isDeleted())
-			f.add(new Icon("deleted", 24));
+			f.add(new Icon("deleted", 18));
 		
 		pseudoClassStateChanged(PseudoClass.getPseudoClass("unread"), !message.isSeen());
 	}

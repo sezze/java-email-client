@@ -27,7 +27,7 @@ public class Main extends Application {
 
 	public static final Client CLIENT = new Client();
 	public static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	public static final int MAX_MESSAGE_COUNT = 50;
+	public static final int MAX_MESSAGE_COUNT = 70;
 		
 	public static final String[] STYLESHEETS = { "client/assets/styles/theme.css", "client/assets/styles/client.css" };
 

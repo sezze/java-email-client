@@ -1,40 +1,79 @@
+
+/* Message list item */
 .message-list-item {
-	-fx-padding: 4px 8px;
+	-fx-padding: 6px 8px;
 	-fx-background-color: -fx-base;
 }
-
 .message-list-item:hover {
 	-fx-background-color: derive(-fx-base, -10%);
 }
-
 .message-list-item:pressed {
 	-fx-background-color: derive(-fx-base, -20%);
 }
-
+.message-list-item .message-sender {
+	-fx-font-size: 13;
+	-fx-alignment: center-left;
+}
 .message-list-item .message-flags {
 	-fx-alignment: center-right;
 }
+.message-list-item .message-attachment-row {
+	-fx-alignment: center-left;
+}
+.message-list-item .message-date-row {
+	-fx-alignment: center-right;
+}
+.message-list-item .message-date-row * {
+	-fx-text-fill: gray;
+}
+.message-list-item:unread .message-sender {
+	-fx-font-weight: bold;
+}
 
+/* Unread mail */
 .message-list-item:unread {
 	-fx-background-color: -fx-accent, -fx-base;
 	-fx-background-insets: 0, 0 0 0 8;
 	-fx-padding: 4 8 4 16;
 }
-
 .message-list-item:unread:hover {
 	-fx-background-color: -fx-accent, derive(-fx-base, -10%);
 }
-
 .message-list-item:unread:pressed {
 	-fx-background-color: -fx-accent, derive(-fx-base, -20%);
 }
 
-.message-view > * {
+/* Message view */
+.message-view-container {
 	-fx-background-color: -fx-text-box-border, -fx-base;
-	-fx-background-insets: 0, 2;
+	-fx-background-insets: 0, 1;
+	-fx-padding: 1;
 }
-
-
+.message-view-content {
+	-fx-background-color: -fx-base;
+}
+.message-view-subject {
+	-fx-padding: 8 8 0 8;
+	-fx-font-size: 14;
+}
+.message-view-details {
+	-fx-padding: 8;
+}
+.message-web-view {
+	-fx-effect: innershadow( two-pass-box , rgba(0,0,0,0.3) , 4, 0.0 , 0 , 1 );
+}
+.message-view-details {
+	-fx-spacing: 8;
+}
+.message-view-recipients {
+	-fx-hgap: 2;
+	-fx-vgap: 2;
+}
+.message-view-recipient {
+	-fx-background-color: derive(-fx-base, -7%);
+	-fx-background-radius: 32px;
+	-fx-padding: 0 6;
+}
 
 
 

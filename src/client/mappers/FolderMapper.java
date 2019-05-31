@@ -99,11 +99,13 @@ public class FolderMapper {
 					//Update flags
 					f = message.getFlags();
 					m = messageMap.get(messageDate);
-					m.setAnswered(f.contains(Flag.ANSWERED));
-					m.setDeleted(f.contains(Flag.DELETED));
-					m.setDraft(f.contains(Flag.DRAFT));
-					m.setFlagged(f.contains(Flag.FLAGGED));
-					m.setSeen(f.contains(Flag.SEEN));
+					if (m != null) {
+						m.setAnswered(f.contains(Flag.ANSWERED));
+						m.setDeleted(f.contains(Flag.DELETED));
+						m.setDraft(f.contains(Flag.DRAFT));
+						m.setFlagged(f.contains(Flag.FLAGGED));
+						m.setSeen(f.contains(Flag.SEEN));
+					}
 					messageMap.remove(messageDate);
 				} else {
 					currentFolder.addMessage(MessageMapper.map(message));
