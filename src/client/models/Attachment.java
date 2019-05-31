@@ -1,6 +1,5 @@
 package client.models;
 
-import java.io.File;
 import java.io.Serializable;
 
 public class Attachment implements Serializable {
@@ -29,12 +28,6 @@ public class Attachment implements Serializable {
 	// Size
 	public int getSize() {
 		return size;
-	}
-	
-	// File (Deprecated)
-	@Deprecated
-	public File getFile() {
-		return null;
 	}
 
 }

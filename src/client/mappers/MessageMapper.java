@@ -1,6 +1,7 @@
 package client.mappers;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,13 @@ import client.models.Message.Builder;
 public class MessageMapper {
 
 	public static Map<Message,javax.mail.Message> messageCache = new HashMap<Message, javax.mail.Message>();
+	
+	public static final Comparator<Message> COMPARATOR = new Comparator<Message>() {
+		@Override
+		public int compare(Message o1, Message o2) {
+			return o2.getDate().compareTo(o1.getDate()); 
+		}
+	};
 	
 	/**
 	 * Client Message -> Java Mail Message

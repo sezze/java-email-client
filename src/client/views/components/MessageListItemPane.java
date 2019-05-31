@@ -6,13 +6,17 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 
 import client.Main;
+import client.controllers.SyncController;
 import client.models.Message;
+import client.util.DialogUtil;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -105,22 +109,27 @@ public class MessageListItemPane extends VBox {
 		lowerRow.getChildren().add(dateRow);
 
 		getChildren().addAll(upperRow, subjectLabel, lowerRow);
+		
 
+		/*
+		 * Flag item
+		 */
 		
-//		/*
-//		 * Flag test
-//		 */
-//		
-//		MenuItem flagItem = new MenuItem("Toggle flag");
-//		flagItem.setOnAction(e -> {
-//			message.setFlagged(!message.isFlagged());
-//		});
-//		
-//		contextMenu = new ContextMenu();
-//		contextMenu.getItems().add(flagItem);
-//		
-//		subjectLabel.setContextMenu(contextMenu);
+		MenuItem flagItem = new MenuItem("Toggle flag");
+		flagItem.setOnAction(e -> message.setFlagged(!message.isFlagged()));
 		
+		MenuItem seenItem = new MenuItem("Toggle seen");
+		seenItem.setOnAction(e -> message.setSeen(!message.isSeen()));
+		
+		MenuItem deletedItem = new MenuItem("Delete");
+		deletedItem.setOnAction(e -> {
+			if (DialogUtil.confirm("Are you sure? This will permanently delete your message on the next sync!")) {
+				message.setDeleted(true);
+			}
+		});
+		
+		contextMenu = new ContextMenu();
+		contextMenu.getItems().addAll(flagItem, seenItem, deletedItem);
 		
 		/*
 		 * Event listener
@@ -143,6 +152,13 @@ public class MessageListItemPane extends VBox {
 						message.setSeen(true);
 					}
 	            }
+	        } else if (e.getButton().equals(MouseButton.SECONDARY)) {
+	        	if (SyncController.getTotalConcurrentSyncing() > 0) {
+					DialogUtil.showWarning("You can't toggle this while the account is syncing!");
+	        		return;
+				} else {
+					contextMenu.show(this, Side.BOTTOM, e.getX(), e.getY()-getHeight());
+				}
 	        }
 		});
 	}

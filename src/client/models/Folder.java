@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import client.mappers.MessageMapper;
+
 public class Folder implements Serializable {
 
 	// Property names
@@ -36,6 +38,7 @@ public class Folder implements Serializable {
 	public void checkListeners() {
 		if (!isSetup) {
 			listeners = new ArrayList<PropertyChangeListener>();
+			messages.sort(MessageMapper.COMPARATOR);
 			childListener = e -> {
 				notifyChangeListeners(e.getSource(), e.getPropertyName());
 			};
@@ -64,13 +67,10 @@ public class Folder implements Serializable {
 	}
 
 	// Messages
-	public void addMessage(Message message, boolean first) {
+	public void addMessage(Message message) {
 		checkListeners();
-		if (first) {
-			messages.add(0, message);
-		} else {
-			messages.add(message);
-		}
+		messages.add(message);
+		messages.sort(MessageMapper.COMPARATOR);
 		message.addChangeListener(childListener);
 		notifyChangeListeners(this, MESSAGES);
 	}

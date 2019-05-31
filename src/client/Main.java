@@ -31,6 +31,7 @@ public class Main extends Application {
 	public static final int MAX_MESSAGE_COUNT = 70;
 		
 	public static final String[] STYLESHEETS = { "client/assets/styles/theme.css", "client/assets/styles/client.css" };
+	private static Stage primaryStage;
 
 	
 	public static void main(String[] args) {
@@ -41,11 +42,10 @@ public class Main extends Application {
 
 		// Configuration
 		LogManager.getLogManager().reset();
-		LOGGER.setLevel(Level.ALL); // Process all log entries
+		LOGGER.setLevel(Level.INFO); // Process all log entries
 
 		ConsoleHandler ch = new ConsoleHandler();
-		//ch.setLevel(Level.SEVERE); // Show only severe log entries in console
-		ch.setLevel(Level.INFO); // Show info (and above) log entries in console
+		ch.setLevel(Level.SEVERE); // Show only severe log entries in console
 		LOGGER.addHandler(ch);
 
 		// File logger
@@ -68,7 +68,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-
+		Main.primaryStage = primaryStage;
 		/*
 		 * Scene setup
 		 */
@@ -138,6 +138,10 @@ public class Main extends Application {
 		
 		System.out.println("EXITING");
 		System.exit(0);
+	}
+	
+	public static Stage getPrimaryStage() {
+		return primaryStage;
 	}
 
 }

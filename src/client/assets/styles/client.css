@@ -75,5 +75,14 @@
 	-fx-padding: 0 6;
 }
 
-
-
+/* Attachment */
+.attachment {
+	-fx-padding: 8;
+	-fx-spacing: 8;
+}
+.attachment:hover {
+	-fx-background-color: derive(-fx-base, -10%);
+}
+.attachment:pressed {
+	-fx-background-color: derive(-fx-base, -20%);
+}

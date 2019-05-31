@@ -33,7 +33,7 @@ public class FolderMapper {
 		int loadMessageCount = Math.min(messageCount, Main.MAX_MESSAGE_COUNT);
 		for (int i = 0; i < loadMessageCount; i++) {
 			javax.mail.Message message = folder.getMessage(messageCount-i);
-			fldr.addMessage(MessageMapper.map(message), false);
+			fldr.addMessage(MessageMapper.map(message));
 		}
 
 		for (javax.mail.Folder subfolder : folder.list()) {
@@ -109,7 +109,7 @@ public class FolderMapper {
 					}
 					messageMap.remove(messageDate);
 				} else {
-					currentFolder.addMessage(MessageMapper.map(message), true);
+					currentFolder.addMessage(MessageMapper.map(message));
 				}	
 			}
 			

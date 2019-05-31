@@ -61,13 +61,14 @@
 .scroll-bar {
 	-fx-background-color: derive(-fx-text-box-border, -5%), derive(-fx-base, -2%);
 	-fx-background-radius: 0;
-	-fx-padding: 4px -2px 4px -1px;
 }
 .scroll-bar:vertical {
 	-fx-pref-width: 14px;
+	-fx-padding: 4px -2px 4px -1px;
 }
 .scroll-bar:horizontal {
 	-fx-pref-height: 14px;
+	-fx-padding: -1px 4px -2px 4px;
 }
 .scroll-bar .thumb {
 	-fx-background-color: -fx-text-box-border;

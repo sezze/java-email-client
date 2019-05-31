@@ -9,6 +9,7 @@ public class Icon extends ImageView {
 		super("client/assets/icons/"+icon+".png");
 		setFitHeight(size);
 		setFitWidth(size);
+		setPreserveRatio(true);
 		
 	}
 
